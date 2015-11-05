@@ -3,6 +3,10 @@
 #include <Box2D/Box2D.h>
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
+#include "Player.h"
+#include "Level.h"
+
+
 
 class Game : public cScreen
 {
@@ -11,13 +15,25 @@ private:
 	float posx;
 	float posy;
 	sf::RectangleShape Rectangle;
+	//b2Body* boxBody;
+	Player* player;
+	Level* level;
+	
 public:
-	Game(void);
-	virtual int Run(sf::RenderWindow &App);
+	//Game Init(void);
+	Game(b2World &world);
+	~Game(){ delete player, delete level; };
+	virtual int Run(sf::RenderWindow &App, b2World &world);
+
+
 };
 
-Game::Game(void)
+
+Game::Game(b2World &world)
 {
+	
+	player = new Player(world,  200, 200);
+	level = new Level(world, 1000, 100);
 	movement_step = 5;
 	posx = 320;
 	posy = 240;
@@ -26,13 +42,22 @@ Game::Game(void)
 	Rectangle.setSize({ 10.f, 10.f });
 }
 
-int Game::Run(sf::RenderWindow &App)
+int Game::Run(sf::RenderWindow &App, b2World &world)
 {
+	
 	int alpha = 0;
 	sf::Texture background;
 	sf::Sprite backgroundSprite;
+	
 	sf::Event Event;
 	bool Running = true;
+	
+
+
+
+	
+
+	
 	if (!background.loadFromFile("Level.jpg"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
@@ -42,6 +67,13 @@ int Game::Run(sf::RenderWindow &App)
 	backgroundSprite.setColor(sf::Color(255, 255, 255, 350));
 	while (Running)
 	{
+		
+		*player;
+
+
+			
+			
+			//App.display();
 		
 		//Verifying events
 		while (App.pollEvent(Event))
@@ -67,6 +99,7 @@ int Game::Run(sf::RenderWindow &App)
 					break;
 				case sf::Keyboard::Left:
 					posx -= movement_step;
+					
 					break;
 				case sf::Keyboard::Right:
 					posx += movement_step;
@@ -87,10 +120,11 @@ int Game::Run(sf::RenderWindow &App)
 		if (posy<0)
 			posy = 0;
 		Rectangle.setPosition({ posx, posy });
-
+		world.Step(1 / 60.f, 8, 3);
 		//Clearing screen
 		App.clear(sf::Color(0, 0, 0, 0));
 		//Drawing
+		player->Draw(App,world);
 		App.draw(backgroundSprite);
 		App.draw(Rectangle);
 		

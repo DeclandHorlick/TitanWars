@@ -11,7 +11,7 @@ private:
 	bool playing;
 public:
 	Menu(void);
-	virtual int Run(sf::RenderWindow &App);
+	virtual int Run(sf::RenderWindow &App, b2World &world);
 };
 
 Menu::Menu(void)
@@ -21,7 +21,7 @@ Menu::Menu(void)
 	playing = false;
 }
 
-int Menu::Run(sf::RenderWindow &App)
+int Menu::Run(sf::RenderWindow &App,b2World &world)
 {
 	sf::Event Event;
 	bool Running = true;
@@ -49,17 +49,17 @@ int Menu::Run(sf::RenderWindow &App)
 	Menu1.setFont(Font);
 	Menu1.setCharacterSize(60);
 	Menu1.setString("Play");
-	Menu1.setPosition({ 160.f, 80.f });
+	Menu1.setPosition({ 100.f, 80.f });
 
 	Menu2.setFont(Font);
 	Menu2.setCharacterSize(60);
 	Menu2.setString("Exit");
-	Menu2.setPosition({ 160.f, 160.f });
+	Menu2.setPosition({ 100.f, 160.f });
 
 	Menu3.setFont(Font);
 	Menu3.setCharacterSize(60);
 	Menu3.setString("Continue");
-	Menu3.setPosition({ 280.f, 160.f });
+	Menu3.setPosition({ 100.f, 80.f });
 
 	if (playing)
 	{
@@ -108,7 +108,7 @@ int Menu::Run(sf::RenderWindow &App)
 		}
 		//Creating text
 		//When getting at alpha_max, we stop modifying the sprite
-		if (alpha<alpha_max)
+		if (alpha < alpha_max)
 		{
 			alpha++;
 		}
