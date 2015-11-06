@@ -32,14 +32,9 @@ public:
 Game::Game(b2World &world)
 {
 	
-	player = new Player(world,  200, 200);
-	level = new Level(world, 1000, 100);
-	movement_step = 5;
-	posx = 320;
-	posy = 240;
-	//Setting sprite
-	Rectangle.setFillColor(sf::Color(255, 255, 255, 150));
-	Rectangle.setSize({ 10.f, 10.f });
+	player = new Player(world,  2.6f, 2.6f);
+	level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
+	
 }
 
 int Game::Run(sf::RenderWindow &App, b2World &world)
@@ -64,51 +59,51 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 		return (-1);
 	}
 	backgroundSprite.setTexture(background);
-	backgroundSprite.setColor(sf::Color(255, 255, 255, 350));
+	//backgroundSprite.setColor(sf::Color(255, 255, 255, 1));
 	while (Running)
 	{
 		
 		*player;
-
+		*level;
 
 			
 			
 			//App.display();
 		
 		//Verifying events
-		while (App.pollEvent(Event))
-		{
-			// Window closed
-			if (Event.type == sf::Event::Closed)
-			{
-				return (-1);
-			}
-			//Key pressed
-			if (Event.type == sf::Event::KeyPressed)
-			{
-				switch (Event.key.code)
-				{
-				case sf::Keyboard::Escape:
-					return (0);
-					break;
-				case sf::Keyboard::Up:
-					posy -= movement_step;
-					break;
-				case sf::Keyboard::Down:
-					posy += movement_step;
-					break;
-				case sf::Keyboard::Left:
-					posx -= movement_step;
-					
-					break;
-				case sf::Keyboard::Right:
-					posx += movement_step;
-					break;
-				default:
-					break;
-				}
-			}
-		}
+		//while (App.pollEvent(Event))
+		//{
+		//	// Window closed
+		//	if (Event.type == sf::Event::Closed)
+		//	{
+		//		return (-1);
+		//	}
+		//	//Key pressed
+		//	if (Event.type == sf::Event::KeyPressed)
+		//	{
+		//		switch (Event.key.code)
+		//		{
+		//		case sf::Keyboard::Escape:
+		//			return (0);
+		//			break;
+		//		case sf::Keyboard::Up:
+		//			posy -= movement_step;
+		//			break;
+		//		case sf::Keyboard::Down:
+		//			posy += movement_step;
+		//			break;
+		//		case sf::Keyboard::Left:
+		//			posx -= movement_step;
+		//			
+		//			break;
+		//		case sf::Keyboard::Right:
+		//			posx += movement_step;
+		//			break;
+		//		default:
+		//			break;
+		//		}
+		//	}
+		//}
 
 		//Updating
 		if (posx>790)
@@ -124,8 +119,10 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 		//Clearing screen
 		App.clear(sf::Color(0, 0, 0, 0));
 		//Drawing
-		player->Draw(App,world);
 		App.draw(backgroundSprite);
+		player->Draw(App,world);
+		level->Draw(App, world);
+		player->Update(App, world);
 		App.draw(Rectangle);
 		
 		App.display();

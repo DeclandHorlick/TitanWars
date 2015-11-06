@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 		std::vector<cScreen*> Screens;
 		int screen = 0;
 
-		b2Vec2 Gravity(0.f, .02f);
+		b2Vec2 Gravity(0.f,0.3f);
 		b2World World(Gravity);
 		
 		//Window creation
