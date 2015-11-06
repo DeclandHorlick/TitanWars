@@ -91,13 +91,13 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 				case sf::Keyboard::Return:
 					if (menu == 0)
 					{
-						//Let's get play !
+						//get play !
 						playing = true;
 						return (1);
 					}
 					else
 					{
-						//Let's get work...
+						//get work
 						return (-1);
 					}
 					break;
@@ -145,6 +145,5 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 		App.display();
 	}
 
-	//Never reaching this point normally, but just in case, exit the application
-	//return (-1);
+	
 }
