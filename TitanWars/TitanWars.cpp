@@ -36,11 +36,11 @@ int main(int argc, char** argv)
 		std::vector<cScreen*> Screens;
 		int screen = 0;
 
-		b2Vec2 Gravity(0.f,0.3f);
+		b2Vec2 Gravity(0.f,2.5f);
 		b2World World(Gravity);
 		
 		//Window creation
-		sf::RenderWindow App(sf::VideoMode(800, 600, 32), "Titan Wars");
+		sf::RenderWindow App(sf::VideoMode(940, 620, 32), "Titan Wars");
 
 		//Mouse cursor no more visible
 		App.setMouseCursorVisible(false);

@@ -5,19 +5,22 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Level.h"
-
+#include "Block.h"
+#include "Rocket.h"
 
 
 class Game : public cScreen
 {
 private:
-	float movement_step;
+	
 	float posx;
 	float posy;
 	sf::RectangleShape Rectangle;
 	//b2Body* boxBody;
 	Player* player;
-	Level* level;
+	Level *level;
+	Rocket *rocket;
+	
 	
 public:
 	//Game Init(void);
@@ -32,8 +35,11 @@ public:
 Game::Game(b2World &world)
 {
 	
-	player = new Player(world,  2.6f, 2.6f);
-	level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
+	player = new Player(world,  80, 80);
+	rocket = new Rocket(80, 10, world);
+	//rocket = new Rocket((60, 60), world, 80, 80,"rocket.png");
+	//level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
+	Level::LoadLevel("Level1.txt", "Block3.png", world);
 	
 }
 
@@ -47,13 +53,13 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	sf::Event Event;
 	bool Running = true;
 	
-
-
-
+	//App.setSize(sf::Vector2u(1200, 640));
 	
 
 	
-	if (!background.loadFromFile("Level.jpg"))
+
+	
+	if (!background.loadFromFile("canyonLevel.png"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
 		return (-1);
@@ -64,65 +70,40 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	{
 		
 		*player;
-		*level;
+		//*level;
+		while (App.pollEvent(Event))
+		{	
 
-			
-			
-			//App.display();
+			if (Event.type == sf::Event::KeyPressed)
+			{
+				switch (Event.key.code)
+				{
+				case sf::Keyboard::Escape:
+					return (0);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
 		
-		//Verifying events
-		//while (App.pollEvent(Event))
-		//{
-		//	// Window closed
-		//	if (Event.type == sf::Event::Closed)
-		//	{
-		//		return (-1);
-		//	}
-		//	//Key pressed
-		//	if (Event.type == sf::Event::KeyPressed)
-		//	{
-		//		switch (Event.key.code)
-		//		{
-		//		case sf::Keyboard::Escape:
-		//			return (0);
-		//			break;
-		//		case sf::Keyboard::Up:
-		//			posy -= movement_step;
-		//			break;
-		//		case sf::Keyboard::Down:
-		//			posy += movement_step;
-		//			break;
-		//		case sf::Keyboard::Left:
-		//			posx -= movement_step;
-		//			
-		//			break;
-		//		case sf::Keyboard::Right:
-		//			posx += movement_step;
-		//			break;
-		//		default:
-		//			break;
-		//		}
-		//	}
-		//}
-
-		//Updating
-		if (posx>790)
-			posx = 790;
-		if (posx<0)
-			posx = 0;
-		if (posy>590)
-			posy = 590;
-		if (posy<0)
-			posy = 0;
-		Rectangle.setPosition({ posx, posy });
 		world.Step(1 / 60.f, 8, 3);
 		//Clearing screen
 		App.clear(sf::Color(0, 0, 0, 0));
 		//Drawing
+		
 		App.draw(backgroundSprite);
+		Level::draw(App);
 		player->Draw(App,world);
-		level->Draw(App, world);
-		player->Update(App, world);
+		//level->draw(App);
+		player->Update(App, world,rocket);
+		if (rocket->getRocket() != true)
+		{
+			//rocket = new Rocket(80, 10, world);
+			rocket->Draw(App);
+			//rocket->ApplyForce();
+		}
 		App.draw(Rectangle);
 		
 		App.display();

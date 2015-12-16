@@ -1,11 +1,13 @@
 #ifndef _PLAYER_H 
 #define _PLAYER_H
-
+#include "CollisionResponder.h"
 
 #include <Box2D/Box2D.h>
 
 #include "SFML/Graphics.hpp" 
 #include "SFML/OpenGL.hpp" 
+#include "SFML/Audio.hpp"
+#include "Rocket.h"
 
 class Player {
 	 private:
@@ -14,14 +16,27 @@ class Player {
 			sf::Sprite playerSprite;
 			//The final texture 
 			sf::Texture playerTexture;
+			sf::Sprite aimSprite;
+			sf::Texture aimTexture;
+			float rotation;
 			const float SCALE = 30.f;
 			bool force;
+			bool jumping;
+			sf::SoundBuffer rocketBuffer;//create buffer
+			sf::Sound rocketSound;
+			sf::Clock animationClock;
+			b2Vec2 getVelocity;
 	  public:
+		    //Rocket *rocket;
+			bool touchingPlat;
 			Player(b2World &world, int width, int height);
 			void Draw(sf::RenderWindow &App,b2World &world);
-			void Update(sf::RenderWindow &App, b2World &world);
+			void Update(sf::RenderWindow &App, b2World &world, Rocket *rocket);
 			~Player(){}
-			
+			sf::IntRect animationRect;
+			/*void onBeginContact(CollisionResponder* other)override ;
+			void onEndContact(CollisionResponder* other)override ;
+			*/
 					
 				 	
 				

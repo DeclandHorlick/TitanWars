@@ -2,6 +2,7 @@
 #include <cScreen.h>
 
 #include <SFML/Graphics.hpp>
+#include "SFML\Audio.hpp"
 
 class Menu : public cScreen
 {
@@ -9,6 +10,8 @@ private:
 	int alpha_max;
 	int alpha_div;
 	bool playing;
+	sf::SoundBuffer godzillaBuffer;
+	sf::Sound godzillaSound;
 public:
 	Menu(void);
 	virtual int Run(sf::RenderWindow &App, b2World &world);
@@ -33,6 +36,8 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 	sf::Text Menu2;
 	sf::Text Menu3;
 	int menu = 0;
+	godzillaBuffer.loadFromFile("godzillaRoar.wav");
+	godzillaSound.setBuffer(godzillaBuffer);
 
 	if (!Texture.loadFromFile("presentation.jpg"))
 	{
@@ -92,6 +97,7 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 					if (menu == 0)
 					{
 						//get play !
+						godzillaSound.play();
 						playing = true;
 						return (1);
 					}

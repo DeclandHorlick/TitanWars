@@ -5,6 +5,10 @@
 
 #pragma once
 
+#define PI 3.147
+#define RAD_TO_DEG 180/PI
+#define DEG_TO_RAD PI/180
+
 #include "targetver.h"
 
 #include <stdio.h>
