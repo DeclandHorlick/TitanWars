@@ -7,7 +7,7 @@
 #include "Level.h"
 #include "Block.h"
 #include "Rocket.h"
-
+#include "SFML\Audio.hpp"
 
 class Game : public cScreen
 {
@@ -20,7 +20,8 @@ private:
 	Player* player;
 	Level *level;
 	Rocket *rocket;
-	
+	sf::SoundBuffer musicBuffer;
+	sf::Sound mainMusic;
 	
 public:
 	//Game Init(void);
@@ -40,6 +41,8 @@ Game::Game(b2World &world)
 	//rocket = new Rocket((60, 60), world, 80, 80,"rocket.png");
 	//level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
 	Level::LoadLevel("Level1.txt", "Block3.png", world);
+	musicBuffer.loadFromFile("mainMusic.wav");
+	mainMusic.setBuffer(musicBuffer);
 	
 }
 
@@ -55,7 +58,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	
 	//App.setSize(sf::Vector2u(1200, 640));
 	
-
+	mainMusic.play();
 	
 
 	

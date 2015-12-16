@@ -52,7 +52,7 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 		rockteBody->SetAngularDamping(1.5);*/
 
 		rocketBody->SetAngularVelocity(1);
-		rocketBody->ApplyTorque(20,goRocket);
+		rocketBody->ApplyTorque(20, goRocket);
 		goRocket = false;
 	}
 	if (goRocket == false)
@@ -66,4 +66,31 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 		rocketBody->SetLinearVelocity(b2Vec2(cos(angle * DEG_TO_RAD)* speed, sin(angle * DEG_TO_RAD)* speed));	//Multiply by SPEED here
 
 	}
+}
+	void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
+	{
+		if (goRocket == true)
+		{
+			//rocketBody->SetLinearVelocity(b2Vec2(10, 10));
+			/*rocketBody->GetAngularVelocity();
+			rocketBody->SetLinearVelocity(new b2Vec2(force * Math.cos(angle),force * Math.sin(angle)));
+			rocketBody->SetAngle(angle);
+			rockteBody->SetAngularDamping(1.5);*/
+
+			rocketBody->SetAngularVelocity(1);
+			rocketBody->ApplyTorque(20, goRocket);
+			goRocket = false;
+		}
+		if (goRocket == false)
+		{
+			float distanceToAimer = 100.0f;
+			float speed = 100;
+			rocketBody->SetAwake(true);
+			rocketBody->SetGravityScale(0);
+			rocketBody->SetTransform(pos + (b2Vec2(cos(angle * DEG_TO_RAD)* distanceToAimer, sin(angle * DEG_TO_RAD)* distanceToAimer)), angle);
+			rocketSprite.setRotation(angle);
+			rocketBody->SetLinearVelocity(b2Vec2(cos(angle * DEG_TO_RAD)* speed, sin(angle * DEG_TO_RAD)* speed));	//Multiply by SPEED here
+
+		}
+	
 }

@@ -57,7 +57,7 @@ Player::Player(b2World &world, int width, int height)
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
-	animationRect = sf::IntRect(0, 0, 85, 80);
+	animationRect = sf::IntRect(0, 0, 85.5, 80);
 	aimSprite.setTextureRect(animationRect);
 	//Define the graphical geometry of the player
 	//sf::Vector2f Sprite = { boxBody->GetPosition().x - (width / 2), boxBody->GetPosition().y - (height / 2), width, height };
@@ -70,7 +70,7 @@ Player::Player(b2World &world, int width, int height)
 	
 	rocketSound.setBuffer(rocketBuffer);
 	
-	getVelocity = boxBody->GetLinearVelocity();
+	
 	
 }
 void Player::Draw(sf::RenderWindow &App,b2World &world)
@@ -111,7 +111,7 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	sf::Event Event;
 	float xVelocity(5.6f);
 	b2Vec2 yVelocity(0, 15);
-	
+	getVelocity = boxBody->GetLinearVelocity();
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -128,9 +128,9 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		
-			//jumping = true;
-			//boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -50));
+
+		//jumping = true;
+		//boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -50));
 		if (getVelocity.y == 0)
 		{
 			boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -yVelocity.y));
@@ -148,30 +148,38 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	{
 		if (sf::Keyboard::E)
 		{
-			
+
 		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		//rocket->setRocket(true);
+		rocket->ApplyForceShotgun(boxBody->GetPosition(), rotation);
+		rocketSound.play();
+
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		if (rotation > 270 || rotation == 0)
 		{
-			aimSprite.rotate(-.25);
-			rotation = aimSprite.getRotation();
-			
+			if (rotation > 270 || rotation == 0)
+			{
+				aimSprite.rotate(-.25);
+				rotation = aimSprite.getRotation();
+
+			}
 		}
-	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (rotation >= 270 )
-		{
-			//aimSprite.setRotation(0);
-			aimSprite.rotate(.25);
-			rotation = aimSprite.getRotation();
-		}
-		
-		
+			if (rotation >= 270)
+			{
+				//aimSprite.setRotation(0);
+				aimSprite.rotate(.25);
+				rotation = aimSprite.getRotation();
+			}
+
+
 	}
 }
+
 //void Player::onBeginContact(CollisionResponder* other) {
 //	printf("++contact++");
 //	if (dynamic_cast<Block*>(other)) {

@@ -25,6 +25,7 @@ private:
 public:
 	Rocket( int width, int height, b2World &m_world);
 	void ApplyForce(b2Vec2 pos, float angle);
+	void ApplyForceShotgun(b2Vec2 pos, float angle);
 	void Draw(sf::RenderWindow &window);
 	
 	bool getRocket()
