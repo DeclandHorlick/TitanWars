@@ -4,7 +4,7 @@
 #include <Box2D/Box2D.h>
 #include "SFML\Graphics.hpp"
 #include "SFML/OpenGL.hpp"
-#include "CollisionResponder.h"
+
 
 class Block  {
 protected:
@@ -14,7 +14,7 @@ protected:
 	b2BodyDef myBodyDef;
 	b2FixtureDef myBodyFixtureDef;
 	b2PolygonShape myShape;
-
+	
 
 	sf::Texture myTexture;
 	sf::Sprite sprite;
@@ -24,6 +24,8 @@ public:
 	Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Texture &texture);
 	~Block();
 	void Draw(sf::RenderWindow &window);
+	bool BoxDeleted();
+	bool blockDeleted;
 	/*void onBeginContact(CollisionResponder* other)override;
 	void onEndContact(CollisionResponder* other)override;
 	*/

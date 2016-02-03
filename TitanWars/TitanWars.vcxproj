@@ -87,12 +87,14 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockManager.h" />
+    <ClInclude Include="BodyDestroyer.h" />
     <ClInclude Include="CollisionResponder.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="cScreen.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Player2.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -101,8 +103,10 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockManager.cpp" />
+    <ClCompile Include="BodyDestroyer.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player2.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

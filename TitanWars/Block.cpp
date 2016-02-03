@@ -7,7 +7,7 @@ Block::Block()
 Block::Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Texture &texture)
 {
 	//sprite.setTexture(texture);
-
+	
 	//b2BodyDef myBodyDef;
 	myBodyDef.type = b2_staticBody; //this will be a static body
 	myBodyDef.position.Set(position.x, position.y);
@@ -19,7 +19,14 @@ Block::Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Textu
 	//Define the shape 
 	//b2PolygonShape shape;
 	myShape.SetAsBox(width * 0.5f, height * 0.5f);
-	blockBody->CreateFixture(&myShape, 0.0f);
+	
+	
+	myBodyFixtureDef.density = 0.f;  // Sets the density of the body
+	myBodyFixtureDef.shape = &myShape; // Sets the shape
+	myBodyFixtureDef.userData = "Block";
+	blockBody->CreateFixture(&myBodyFixtureDef); // Apply the fixture definition
+
+	//blockBody->CreateFixture(&myBodyFixtureDef, 0.0f);
 //	sprite.setOrigin(width*0.5f, height*0.5f);
 
 	//Define the graphical geometry of the platfrom
@@ -31,8 +38,15 @@ Block::~Block()
 {
 }
 void Block::Draw(sf::RenderWindow &window){
-
-	window.draw(sprite);
+	if (blockDeleted == false)
+	{
+		window.draw(sprite);
+	}
+}
+bool Block::BoxDeleted()
+{
+	//blockDeleted = true;
+	return blockDeleted;
 }
 //void Block::onBeginContact(CollisionResponder* other) {
 //}

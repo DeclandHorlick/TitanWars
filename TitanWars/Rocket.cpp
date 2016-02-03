@@ -21,8 +21,10 @@ Rocket::Rocket( int width, int height, b2World &m_world)
 	rShapee.m_p.Set(0, 0);
 	rShapee.m_radius = 16; 
 	rFixtureDef.shape = &rShapee; 
-	rocketBody->CreateFixture(&rShapee, 0.0f);
+	rFixtureDef.userData = "Rocket";
 	rFixtureDef.density = 0.f;
+	rocketBody->CreateFixture(&rFixtureDef);
+	//rocketBody->CreateFixture(&rShapee, 0.0f);
 	
 
 	m_width = width;

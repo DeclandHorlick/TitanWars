@@ -47,6 +47,7 @@ Player::Player(b2World &world, int width, int height)
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 0.f;  // Sets the density of the body
 	FixtureDef.shape = &shape; // Sets the shape
+	FixtureDef.userData = "Player";
 	boxBody->CreateFixture(&FixtureDef); // Apply the fixture definition
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
@@ -58,7 +59,7 @@ Player::Player(b2World &world, int width, int height)
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
 	animationRect = sf::IntRect(0, 0, 85.5, 80);
-	aimSprite.setTextureRect(animationRect);
+	playerSprite.setTextureRect(animationRect);
 	//Define the graphical geometry of the player
 	//sf::Vector2f Sprite = { boxBody->GetPosition().x - (width / 2), boxBody->GetPosition().y - (height / 2), width, height };
 	rotation = aimSprite.getRotation();

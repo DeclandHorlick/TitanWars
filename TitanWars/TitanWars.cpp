@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 		//Screens preparations
 		Menu s0;
 		Screens.push_back(&s0);
-		Game s1(World);
+		Game s1(&World);
 		Screens.push_back(&s1);
 		
 
