@@ -43,7 +43,7 @@ void Block::Draw(sf::RenderWindow &window){
 	}
 	else
 	{
-		int* myDick = new int (50);
+//		int* myDick = new int (50);
 	}
 }
 bool Block::BoxDeleted()

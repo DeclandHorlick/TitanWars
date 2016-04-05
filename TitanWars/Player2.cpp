@@ -51,13 +51,14 @@ Player2::Player2(b2World &world, int width, int height)
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
 	m_height = height;
-	playerTexture.loadFromFile("godzilla.png");
+	//playerTexture.loadFromFile("godzilla.png");
 	aimTexture.loadFromFile("aimer.png");
-	playerSprite.setOrigin(42.5, 40);
+	playerSprite.setOrigin(34.5, 36);
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
-	animationRect = sf::IntRect(0, 0, 85.5, 80);
+	animationRect = sf::IntRect(0, 0, 69, 72);
+	//animationRect = sf::IntRect(0, 0, 61, 72);
 	playerSprite.setTextureRect(animationRect);
 	
 	rotation = aimSprite.getRotation();
@@ -74,15 +75,31 @@ Player2::Player2(b2World &world, int width, int height)
 }
 void Player2::Draw(sf::RenderWindow &App, b2World &world)
 {
-	if (animationClock.getElapsedTime().asSeconds() > .25f)
+	if (_myTitan == "godzilla")
 	{
-		if (animationRect.left >= 560)
-			animationRect.left = 0;
-		else
-			animationRect.left += 85.5;
+		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		{
+			if (animationRect.left >= 274)
+				animationRect.left = 0;
+			else
+				animationRect.left += 69;
 
-		playerSprite.setTextureRect(animationRect);
-		animationClock.restart();
+			playerSprite.setTextureRect(animationRect);
+			animationClock.restart();
+		}
+	}
+	else if (_myTitan == "kingkong")
+	{
+		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		{
+			if (animationRect.left >= 366)
+				animationRect.left = 0;
+			else
+				animationRect.left += 61;
+
+			playerSprite.setTextureRect(animationRect);
+			animationClock.restart();
+		}
 	}
 	b2Vec2 bodypos = boxBody->GetPosition();
 	playerSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
@@ -113,7 +130,7 @@ void Player2::SetTitan(sf::String &myTitan)
 	}
 	else
 	{
-		playerTexture.loadFromFile("godzilla2.png");
+		playerTexture.loadFromFile("kingkong.png");
 	}
 	playerSprite.setTexture(playerTexture);
 

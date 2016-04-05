@@ -25,8 +25,13 @@ public:
 		{
 			if (fixAType == "Block") 
 			{
+
+
+
 				b2Body* bodyUserBody= contact->GetFixtureA()->GetBody();
+				//b2Body* rocketBody = contact->GetFixtureB()->GetBody();
 				//static_cast<Block*>(fixAType)->BoxDeleted();
+				//rocketBody->m_radius(32, 32);
 				Block* block = static_cast<Block*>(a);
 
 				block->blockDeleted = true;
@@ -35,7 +40,7 @@ public:
 			}
 			else if (fixBType == "Block") 
 			{
-				b2Body* bodyUserBody = contact->GetFixtureA()->GetBody();
+				b2Body* bodyUserBody = contact->GetFixtureB()->GetBody();
 				//const_cast<Block*>(fixBType)->BoxDeleted();
 				Block* block = static_cast<Block*>(b);
 				block->blockDeleted = true;

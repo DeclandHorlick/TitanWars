@@ -51,7 +51,7 @@ Player::Player(b2World &world, int width, int height)
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
 	m_height = height;
-	playerTexture.loadFromFile("godzilla.png");
+	//playerTexture.loadFromFile("godzilla.png");
 	
 	aimTexture.loadFromFile("aimer.png");
 	playerSprite.setOrigin(34.5, 36);

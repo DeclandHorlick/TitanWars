@@ -32,6 +32,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 {
 	sf::Event Event;
 	bool Running = true;
+	bool player2selection = false;
 	sf::Texture godzillaTexture;
 	sf::Sprite godzillaSprite;
 	sf::Texture kingTexture;
@@ -69,7 +70,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 	godzillaText.setFont(Font);
 	godzillaText.setCharacterSize(60);
 	godzillaText.setString("GODZILLA");
-	godzillaText.setPosition({ 600.f, 300.f });
+	godzillaText.setPosition({ 100.f, 500.f });
 
 	kingText.setFont(Font);
 	kingText.setCharacterSize(60);
@@ -105,21 +106,40 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 					selection = 1;
 					break;
 				case sf::Keyboard::Return:
-					if (selection == 0)
+					if (player2selection)
+					{
+						 if (selection == 0)
+						{
+							//get gozilla
+							playing = true;
+							PlayerManager::GetInstance()->setP2TextureName(gozillaS);
+							
+							return (2);
+						}
+						else
+						{
+							//get kingkong
+							playing = true;
+							PlayerManager::GetInstance()->setP2TextureName(kingS);
+							
+							return(2);
+						}
+					}
+					else if (selection == 0)
 					{
 						//get gozilla
-						playing = true;
-						PlayerManager::GetInstance()->setP1TextureName(gozillaS);
 						
-						return (2);
+						PlayerManager::GetInstance()->setP1TextureName(gozillaS);
+						player2selection = true;
+						//return (2);
 					}
 					else
 					{
 						//get kingkong
-						playing = true;
+						
 						PlayerManager::GetInstance()->setP1TextureName(kingS);
-
-						return(2);
+						player2selection = true;
+						//return(2);
 					}
 					break;
 				default:
@@ -133,7 +153,21 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 		{
 			alpha++;
 		}
-		if (selection == 1)
+		if (player2selection)
+		{
+			if (selection == 1)
+			{
+				godzillaText.setColor(sf::Color(255, 255, 255, 255));
+				kingText.setColor(sf::Color(0, 0, 255, 255));
+			}
+			else
+			{
+				kingText.setColor(sf::Color(255, 255, 255, 255));
+				godzillaText.setColor(sf::Color(0, 0, 255, 255));
+			}
+
+		}
+		else if (selection == 1)
 		{
 			godzillaText.setColor(sf::Color(255, 255, 255, 255));
 			kingText.setColor(sf::Color(255, 0, 0, 255));

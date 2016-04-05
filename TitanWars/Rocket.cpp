@@ -7,7 +7,7 @@ Rocket::Rocket( int width, int height, b2World &m_world)
 	//Player temp(m_world, width, height);
 	
 	rBodyDef.type = b2_dynamicBody; //this will be a dynamic body
-	rBodyDef.position.Set(100, 100);
+	//rBodyDef.position.Set(100, 100);
 	rBodyDef.userData = this;
 	
 	rBodyDef.angle = 45; //set the starting angle

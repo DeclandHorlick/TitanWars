@@ -31,6 +31,7 @@ private:
 	sf::Sound mainMusic;
 	int elapsedTime;
 	sf::Clock deltaClock;
+	sf::Clock p2Clock;
 	
 public:
 	//Game Init(void);
@@ -55,6 +56,7 @@ Game::Game(b2World* world)
 	musicBuffer.loadFromFile("mainMusic.wav");
 	mainMusic.setBuffer(musicBuffer);
 	
+	
 }
 
 int Game::Run(sf::RenderWindow &App, b2World &world)
@@ -64,7 +66,8 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	int alpha = 0;
 	sf::Texture background;
 	sf::Sprite backgroundSprite;
-	
+	sf::Font Font;
+	sf::Text timeText;
 	sf::Event Event;
 	bool Running = true;
 	
@@ -73,7 +76,14 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	mainMusic.play();
 	
 
-	
+	if (!Font.loadFromFile("C:\\Windows\\Fonts\\SLKSCR.ttf"))
+	{
+		std::cerr << "Error loading verdanab.ttf" << std::endl;
+	}
+
+	timeText.setFont(Font);
+	timeText.setCharacterSize(60);
+	timeText.setPosition({ 460.f, 25.f });
 	if (!background.loadFromFile("nightLevel.png"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
@@ -114,24 +124,29 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 		//level->draw(App);
 		
 		PlayerManager::GetInstance()->getPlayer2()->Draw(App, world);
-		float deltaTime = deltaClock.getElapsedTime().asSeconds();
+		int deltaTime = deltaClock.getElapsedTime().asSeconds();
+		int p2Time = p2Clock.getElapsedTime().asSeconds();
 		//deltaClock.restart();
-		if (deltaTime < 61)
+		if (deltaTime < 62)
 		{
 			if (deltaTime >= 0 && deltaTime <= 30)
 			{
 				PlayerManager::GetInstance()->getPlayer1()->Update(App, world, rocket);
-				//deltaTime += 1;
+				std::string s = std::to_string(deltaTime);
+				timeText.setString(s);
 				//std::cerr << "This is the time we need = " << deltaTime << std::endl;
+				p2Clock.restart();
 			}
-			else if (deltaTime > 30 && deltaTime < 60)
+			else if (p2Time >= 0 && p2Time <= 30)
 			{
 				PlayerManager::GetInstance()->getPlayer2()->Update(App, world, rocket);
-				//deltaTime++;
+				std::string k = std::to_string(p2Time);
+				timeText.setString(k);
 			}
 			else if (deltaTime > 60)
 			{
 				deltaClock.restart();
+				p2Clock.restart();
 			}
 			
 			
@@ -144,7 +159,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 			rocket->Draw(App);
 			//rocket->ApplyForce();
 		}
-		
+		App.draw(timeText);
 		App.display();
 	}
 
