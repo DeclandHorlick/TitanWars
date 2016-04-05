@@ -1,6 +1,5 @@
 #ifndef _PLAYER2_H 
 #define _PLAYER2_H
-#include "CollisionResponder.h"
 
 #include <Box2D/Box2D.h>
 
@@ -26,10 +25,15 @@ private:
 	sf::Sound rocketSound;
 	sf::Clock animationClock;
 	b2Vec2 getVelocity;
+	bool goingRight = true;
+	Rocket *rocket;
+	sf::String _myTitan;
+
 public:
 	//Rocket *rocket;
 	bool touchingPlat;
 	Player2(b2World &world, int width, int height);
+	void SetTitan(sf::String &myTitan);
 	void Draw(sf::RenderWindow &App, b2World &world);
 	void Update(sf::RenderWindow &App, b2World &world, Rocket *rocket);
 	~Player2(){}

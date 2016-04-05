@@ -28,6 +28,7 @@
 #include "ScreenManager.h"
 #include <Box2D/Box2D.h>
 #include "Player.h"
+#include "CollisionResponder.h"
 
 
 int main(int argc, char** argv)
@@ -38,9 +39,10 @@ int main(int argc, char** argv)
 
 		b2Vec2 Gravity(0.f,2.5f);
 		b2World World(Gravity);
-		
+		CollisionResponder collisionResponder;
+		World.SetContactListener(&collisionResponder);
 		//Window creation
-		sf::RenderWindow App(sf::VideoMode(940, 620, 32), "Titan Wars");
+		sf::RenderWindow App(sf::VideoMode(960, 620, 32), "Titan Wars");
 
 		//Mouse cursor no more visible
 		App.setMouseCursorVisible(false);
@@ -48,16 +50,24 @@ int main(int argc, char** argv)
 		//Screens preparations
 		Menu s0;
 		Screens.push_back(&s0);
-		Game s1(&World);
+
+		CharacterSelect s1;
 		Screens.push_back(&s1);
-		
+
+
+		bool gameLoaded = false;
 
 		//Main loop
 		while (screen >= 0)
 		{
 
 			screen = Screens[screen]->Run(App,World);
-			
+			if (screen == 2 && !gameLoaded)
+			{
+				Game s2(&World);
+				Screens.push_back(&s2);
+				gameLoaded = true;
+			}
 		}
 
 		return EXIT_SUCCESS;

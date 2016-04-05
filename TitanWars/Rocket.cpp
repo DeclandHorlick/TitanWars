@@ -11,7 +11,7 @@ Rocket::Rocket( int width, int height, b2World &m_world)
 	rBodyDef.userData = this;
 	
 	rBodyDef.angle = 45; //set the starting angle
-	rBodyDef.userData = this;
+	
 
 	rocketBody = m_world.CreateBody(&rBodyDef);
 	//rShape.SetAsBox(width * 0.5f, height * 0.5f);
@@ -69,7 +69,7 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 
 	}
 }
-	void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
+void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
 	{
 		if (goRocket == true)
 		{

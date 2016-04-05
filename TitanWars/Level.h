@@ -34,7 +34,7 @@ private:
 	static const int SCALE;//class variable
 	static int currentlevel;
 	static const int MAXLEVELS;
-	static std::vector<Block*> blocks;
+	std::vector<Block*> blocks;
 
 public:
 

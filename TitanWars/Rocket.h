@@ -4,7 +4,7 @@
 #include <Box2D/Box2D.h>
 #include "SFML\Graphics.hpp"
 #include "SFML/OpenGL.hpp"
-#include "CollisionResponder.h"
+
 
 
 class Rocket
@@ -20,6 +20,7 @@ private:
 	sf::Texture rocketTexture;
 	bool goRocket;
 	
+	
 
 
 public:
@@ -28,14 +29,15 @@ public:
 	void ApplyForceShotgun(b2Vec2 pos, float angle);
 	void Draw(sf::RenderWindow &window);
 	
+	void setRocket(bool tempGo)
+	{
+		goRocket = tempGo;
+	}
 	bool getRocket()
 	{
 		return goRocket;
 	}
-	void setRocket(bool tempGo)
-	{
-		goRocket=tempGo;
-	}
+	
 	~Rocket();
 
 	

@@ -6,7 +6,7 @@
 bool BlockManager::instanceFlag = false;
 BlockManager* BlockManager::instance = NULL;
 
-std::vector<Block> BlockManager::blocks(0);
+std::vector<Block*> BlockManager::blocks(0);
 
 
 BlockManager* BlockManager::GetInstance()
@@ -29,11 +29,11 @@ void BlockManager::Init(b2World *pWorld, sf::RenderWindow window)
 
 
 }
-void BlockManager::addBlock(int x, int y, int w, int h, b2World  &world, sf::Texture texture)
+void BlockManager::addBlock(int x, int y, int w, int h, b2World  &world, sf::Sprite* sprite)
 {
 	//std::string path = p;
 	b2Vec2 pos(x, y);
-	Block temp(pos, w, h, world, texture);
+	Block* temp = new Block(pos, w, h, world, sprite);
 
 	blocks.push_back(temp);
 }
@@ -43,10 +43,10 @@ void BlockManager::addBlock(int x, int y, int w, int h, b2World  &world, sf::Tex
 
 void BlockManager::Draw(sf::RenderWindow& window){
 
-	for each  (Block block in blocks)
+	for each  (Block* block in blocks)
 	{
 
-		block.Draw(window);
+		block->Draw(window);
 
 	}
 

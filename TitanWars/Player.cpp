@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "Player.h"
-#include "CollisionResponder.h"
 #include "Block.h"
 #include <vector> 
 #include <iostream>
@@ -53,12 +52,13 @@ Player::Player(b2World &world, int width, int height)
 	m_width = width;
 	m_height = height;
 	playerTexture.loadFromFile("godzilla.png");
+	
 	aimTexture.loadFromFile("aimer.png");
-	playerSprite.setOrigin(42.5, 40);
+	playerSprite.setOrigin(34.5, 36);
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
-	animationRect = sf::IntRect(0, 0, 85.5, 80);
+	animationRect = sf::IntRect(0, 0, 69, 72);
 	playerSprite.setTextureRect(animationRect);
 	//Define the graphical geometry of the player
 	//sf::Vector2f Sprite = { boxBody->GetPosition().x - (width / 2), boxBody->GetPosition().y - (height / 2), width, height };
@@ -76,19 +76,46 @@ Player::Player(b2World &world, int width, int height)
 }
 void Player::Draw(sf::RenderWindow &App,b2World &world)
 {
-	if (animationClock.getElapsedTime().asSeconds() > .25f)
+	if (_myTitan == "godzilla")
 	{
-		if (animationRect.left >= 560)
-			animationRect.left = 0;
-		else
-			animationRect.left += 85.5;
+		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		{
+			if (animationRect.left >= 274)
+				animationRect.left = 0;
+			else
+				animationRect.left += 69;
 
-		playerSprite.setTextureRect(animationRect);
-		animationClock.restart();
+			playerSprite.setTextureRect(animationRect);
+			animationClock.restart();
+		}
+	}
+	else if (_myTitan == "kingkong")
+	{
+		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		{
+			if (animationRect.left >= 366)
+				animationRect.left = 0;
+			else
+				animationRect.left += 61;
+
+			playerSprite.setTextureRect(animationRect);
+			animationClock.restart();
+		}
 	}
 	b2Vec2 bodypos = boxBody->GetPosition();
-	playerSprite.setPosition(sf::Vector2f(bodypos.x,bodypos.y));
+	playerSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	aimSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
+	if (rotation < 270 && rotation > 0)
+	{
+		playerSprite.setScale(-1, 1);
+		
+	}
+	else if (rotation >= 270 || rotation == 0)
+	{
+		playerSprite.setScale(1, 1);
+		
+	}
+	
 	App.draw(playerSprite);
 	App.draw(aimSprite);
 	int32 BodyIterator = world.GetBodyCount();
@@ -107,6 +134,24 @@ void Player::Draw(sf::RenderWindow &App,b2World &world)
 	//	}
 	//}
 }
+void Player::SetTitan(sf::String &myTitan)
+{
+	_myTitan = myTitan;
+	if (_myTitan == "godzilla")
+	{
+		playerTexture.loadFromFile("godzilla.png");
+	}
+	else
+	{
+		playerTexture.loadFromFile("kingkong.png");
+	}
+	playerSprite.setTexture(playerTexture);
+	
+}
+sf::String Player::GetTitan()
+{
+	return _myTitan;
+}
 void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 {
 	sf::Event Event;
@@ -119,13 +164,15 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	{
 
 		boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
-
+		goingRight = false;
 
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 
 		boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
+		goingRight = true;
+		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
@@ -142,6 +189,7 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
 		//rocket->setRocket(true);
+		rocket->setRocket(true);
 		rocket->ApplyForce(boxBody->GetPosition(), rotation);
 		rocketSound.play();
 	}
@@ -155,13 +203,14 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		//rocket->setRocket(true);
+		rocket->setRocket(true);
 		rocket->ApplyForceShotgun(boxBody->GetPosition(), rotation);
 		rocketSound.play();
 
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			if (rotation > 270 || rotation == 0)
+			if (rotation > 180 || rotation == 0)
 			{
 				aimSprite.rotate(-.25);
 				rotation = aimSprite.getRotation();
@@ -170,7 +219,7 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 		}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-			if (rotation >= 270)
+			if (rotation >= 180)
 			{
 				//aimSprite.setRotation(0);
 				aimSprite.rotate(.25);

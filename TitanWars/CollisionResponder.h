@@ -9,7 +9,7 @@
 #include "Rocket.h"
 #include "BodyDestroyer.h"
 //
-class CollisionResponder : public b2ContactListener {
+class CollisionResponder: public b2ContactListener {
 public:
 
 	void BeginContact(b2Contact* contact)
@@ -17,23 +17,28 @@ public:
 		void* fixAType = contact->GetFixtureA()->GetUserData();
 		void* fixBType = contact->GetFixtureB()->GetUserData();
 
+		void* a = contact->GetFixtureA()->GetBody()->GetUserData();
+		void* b = contact->GetFixtureB()->GetBody()->GetUserData();
+
 		if (fixAType == "Rocket" && fixBType == "Block"
 			|| fixAType == "Block" && fixBType == "Rocket") 
 		{
 			if (fixAType == "Block") 
 			{
 				b2Body* bodyUserBody= contact->GetFixtureA()->GetBody();
-				static_cast<Block*>(fixAType)->BoxDeleted();
-				//Block* block = static_cast<Block*>(fixAType);
+				//static_cast<Block*>(fixAType)->BoxDeleted();
+				Block* block = static_cast<Block*>(a);
+
+				block->blockDeleted = true;
 				//block->BoxDeleted();
 				BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
 			}
 			else if (fixBType == "Block") 
 			{
 				b2Body* bodyUserBody = contact->GetFixtureA()->GetBody();
-				static_cast<Block*>(fixBType)->BoxDeleted();
-				//Block* block = static_cast<Block*>(fixBType);
-				//block->BoxDeleted();
+				//const_cast<Block*>(fixBType)->BoxDeleted();
+				Block* block = static_cast<Block*>(b);
+				block->blockDeleted = true;
 				BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
 			}
 

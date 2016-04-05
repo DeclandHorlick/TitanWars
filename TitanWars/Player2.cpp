@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "Player2.h"
-#include "CollisionResponder.h"
 #include "Block.h"
 #include <vector> 
 #include <iostream>
@@ -34,7 +33,7 @@ Player2::Player2(b2World &world, int width, int height)
 	b2BodyDef bodyDef;
 	//bodyDef.type = b2_staticBody;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = b2Vec2(600, 300);
+	bodyDef.position = b2Vec2(900, 300);
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
@@ -52,7 +51,7 @@ Player2::Player2(b2World &world, int width, int height)
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
 	m_height = height;
-	playerTexture.loadFromFile("godzilla2.png");
+	playerTexture.loadFromFile("godzilla.png");
 	aimTexture.loadFromFile("aimer.png");
 	playerSprite.setOrigin(42.5, 40);
 	playerSprite.setTexture(playerTexture);
@@ -88,11 +87,36 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 	b2Vec2 bodypos = boxBody->GetPosition();
 	playerSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	aimSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
+	if (rotation < 270 && rotation > 0)
+	{
+		playerSprite.setScale(-1, 1);
+
+	}
+	else if (rotation >= 270 || rotation == 0)
+	{
+		playerSprite.setScale(1, 1);
+
+	}
+	
 	App.draw(playerSprite);
 	App.draw(aimSprite);
 	int32 BodyIterator = world.GetBodyCount();
 	std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
 	
+}
+void Player2::SetTitan(sf::String &myTitan)
+{
+	_myTitan = myTitan;
+	if (_myTitan == "godzilla")
+	{
+		playerTexture.loadFromFile("godzilla.png");
+	}
+	else
+	{
+		playerTexture.loadFromFile("godzilla2.png");
+	}
+	playerSprite.setTexture(playerTexture);
+
 }
 void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 {
@@ -106,13 +130,14 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	{
 
 		boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
-
+		goingRight = false;
 
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 
 		boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
+		goingRight = true;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
@@ -148,7 +173,7 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		if (rotation > 270 || rotation == 0)
+		if (rotation > 180 || rotation == 0)
 		{
 			aimSprite.rotate(-.25);
 			rotation = aimSprite.getRotation();
@@ -157,7 +182,7 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		if (rotation >= 270)
+		if (rotation >= 180)
 		{
 			//aimSprite.setRotation(0);
 			aimSprite.rotate(.25);

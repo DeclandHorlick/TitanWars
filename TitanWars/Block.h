@@ -7,9 +7,9 @@
 
 
 class Block  {
-protected:
+private:
 	b2Body* blockBody;
-	int SCALE = 32;
+	//int SCALE = 16;
 	b2Body* myBody;
 	b2BodyDef myBodyDef;
 	b2FixtureDef myBodyFixtureDef;
@@ -20,14 +20,12 @@ protected:
 	sf::Sprite sprite;
 	
 public:
+	bool blockDeleted;
 	Block();
-	Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Texture &texture);
+	Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Sprite* sprite);
 	~Block();
 	void Draw(sf::RenderWindow &window);
 	bool BoxDeleted();
-	bool blockDeleted;
-	/*void onBeginContact(CollisionResponder* other)override;
-	void onEndContact(CollisionResponder* other)override;
-	*/
+	
 };
 #endif

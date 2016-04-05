@@ -15,7 +15,7 @@ public:
 	void Init(b2World *pWorld, sf::RenderWindow window);
 	void Draw(sf::RenderWindow& window);
 	void Update();
-	static void addBlock(int x, int y, int w, int h, b2World& world, sf::Texture texture);
+	static void addBlock(int x, int y, int w, int h, b2World& world, sf::Sprite* sprite);
 	//bool CheckCollision(b2Body*playerBody);
 	static BlockManager* GetInstance();
 	~BlockManager()
@@ -30,7 +30,7 @@ private:
 	std::list<Block> platforms;
 	static bool instanceFlag;
 	static BlockManager* instance;
-	static std::vector<Block> blocks;
+	static std::vector<Block*> blocks;
 
 };
 #endif

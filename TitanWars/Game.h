@@ -11,6 +11,8 @@
 #include "Rocket.h"
 #include "BodyDestroyer.h"
 #include "SFML\Audio.hpp"
+#include "PlayerManager.h"
+
 
 class Game : public cScreen
 {
@@ -24,7 +26,7 @@ private:
 	Player2* player2;
 	Level *level;
 	Rocket *rocket;
-	CollisionResponder collisionResponder;
+	
 	sf::SoundBuffer musicBuffer;
 	sf::Sound mainMusic;
 	int elapsedTime;
@@ -42,14 +44,14 @@ public:
 
 Game::Game(b2World* world)
 {
-	collisionResponder;
-	world->SetContactListener(&collisionResponder);
-	player = new Player(*world,  80, 80);
-	player2 = new Player2(*world, 80, 80);
+	//collisionResponder;
+
+	//world->SetContactListener(&collisionResponder);
+	PlayerManager::GetInstance()->createPlayers(*world, 80, 80);
 	rocket = new Rocket(80, 10, *world);
 	//rocket = new Rocket((60, 60), world, 80, 80,"rocket.png");
 	//level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
-	Level::LoadLevel("Level1.txt", "Block3.png", *world);
+	Level::LoadLevel("Level1.txt", "Terrain.png", *world);
 	musicBuffer.loadFromFile("mainMusic.wav");
 	mainMusic.setBuffer(musicBuffer);
 	
@@ -57,6 +59,7 @@ Game::Game(b2World* world)
 
 int Game::Run(sf::RenderWindow &App, b2World &world)
 {
+	//world.SetContactListener(&collisionResponder);
 	BodyDestroyer::GetInstance(&world);
 	int alpha = 0;
 	sf::Texture background;
@@ -71,7 +74,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	
 
 	
-	if (!background.loadFromFile("canyonLevel.png"))
+	if (!background.loadFromFile("nightLevel.png"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
 		return (-1);
@@ -81,8 +84,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	while (Running)
 	{
 		BodyDestroyer::GetInstance()->DestroyBodies();
-		*player;
-		*player2;
+		
 		//*level;
 		while (App.pollEvent(Event))
 		{
@@ -108,23 +110,23 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 
 		App.draw(backgroundSprite);
 		Level::draw(App);
-		player->Draw(App, world);
+		PlayerManager::GetInstance()->getPlayer1()->Draw(App, world);
 		//level->draw(App);
 		
-		player2->Draw(App, world);
+		PlayerManager::GetInstance()->getPlayer2()->Draw(App, world);
 		float deltaTime = deltaClock.getElapsedTime().asSeconds();
 		//deltaClock.restart();
 		if (deltaTime < 61)
 		{
 			if (deltaTime >= 0 && deltaTime <= 30)
 			{
-				player->Update(App, world, rocket);
+				PlayerManager::GetInstance()->getPlayer1()->Update(App, world, rocket);
 				//deltaTime += 1;
 				//std::cerr << "This is the time we need = " << deltaTime << std::endl;
 			}
 			else if (deltaTime > 30 && deltaTime < 60)
 			{
-				player2->Update(App, world, rocket);
+				PlayerManager::GetInstance()->getPlayer2()->Update(App, world, rocket);
 				//deltaTime++;
 			}
 			else if (deltaTime > 60)
@@ -142,7 +144,6 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 			rocket->Draw(App);
 			//rocket->ApplyForce();
 		}
-		App.draw(Rectangle);
 		
 		App.display();
 	}

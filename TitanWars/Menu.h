@@ -94,7 +94,12 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 					menu = 1;
 					break;
 				case sf::Keyboard::Return:
-					if (menu == 0)
+					if (menu == 0 && playing == true)
+					{
+						//get play !
+						return (2);
+					}
+					else if (menu == 0)
 					{
 						//get play !
 						godzillaSound.play();
