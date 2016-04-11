@@ -44,8 +44,8 @@ Level::Level()
 void Level::LoadLevel(string name, string texturename , b2World &world)
 {
 	vector<string> map = Level::loadALevelFromTextFile(name);
-	const int mapX = 60;
-	const int mapY = 40;
+	const int mapX = 80;
+	const int mapY = 45;
 	sf::Sprite temp;
 
 	if (!texture.loadFromFile(texturename))//"myTextures3.png"
@@ -73,7 +73,7 @@ void Level::LoadLevel(string name, string texturename , b2World &world)
 			temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
 
 			
-			if (c == 'C')
+			if (c == 'Q')//TOP L
 			{
 				
 				/*DIFFERENT CHARACTERS SPAN DIFFERENT TEXTURE SPRITES*/
@@ -83,7 +83,7 @@ void Level::LoadLevel(string name, string texturename , b2World &world)
 				
 
 			}
-			if (c == 'G')
+			if (c == 'E')//TOP R
 			{
 				temp.setTextureRect(sf::IntRect(1 * SCALE, 0, SCALE, SCALE));
 				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
@@ -104,23 +104,94 @@ void Level::LoadLevel(string name, string texturename , b2World &world)
 				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
 				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
 			}
-			if (c == 'R')
+			if (c == 'B')
 			{
 
 				temp.setTextureRect(sf::IntRect(4 * SCALE, 0, SCALE, SCALE));
 				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
 				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
 			}
-			if (c == 'F')
+			if (c == 'V')
 			{
 
 				temp.setTextureRect(sf::IntRect(5 * SCALE, 0, SCALE, SCALE));
 				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
 				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
 			}
-			if (c == 'L')
+			if (c == 'O')
 			{
-				temp.setTextureRect(sf::IntRect(6 * SCALE, 0, SCALE, SCALE));
+				temp.setTextureRect(sf::IntRect(23 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'L') // RIGHT SIDE 2
+			{
+				temp.setTextureRect(sf::IntRect(7 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'C') // LEFT CORNER 1
+			{
+				temp.setTextureRect(sf::IntRect(12 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'T') // LEFT SIDE CORNER 
+			{
+				temp.setTextureRect(sf::IntRect(14 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'U') // LEFT SIDE
+			{
+				temp.setTextureRect(sf::IntRect(10 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'K') // LEFT SIDE 2
+			{
+				temp.setTextureRect(sf::IntRect(8 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+
+			if (c == 'Y') // RIGHT CORNER
+			{
+				temp.setTextureRect(sf::IntRect(17 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'G') // GRASS
+			{
+				temp.setTextureRect(sf::IntRect(24 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'R') // GRASS 2
+			{
+				temp.setTextureRect(sf::IntRect(25 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'S') // SHINY
+			{
+				temp.setTextureRect(sf::IntRect(28 * SCALE, 0, SCALE, SCALE));
+				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
+				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
+
+			}
+			if (c == 'N') // SHINY 2
+			{
+				temp.setTextureRect(sf::IntRect(29 * SCALE, 0, SCALE, SCALE));
 				//temp.setPosition((sf::Vector2f(x * SCALE, y * SCALE)));
 				BlockManager::GetInstance()->addBlock(x * SCALE, y * SCALE, SCALE, SCALE, world, &temp);
 

@@ -49,7 +49,7 @@ Game::Game(b2World* world)
 
 	//world->SetContactListener(&collisionResponder);
 	PlayerManager::GetInstance()->createPlayers(*world, 80, 80);
-	rocket = new Rocket(80, 10, *world);
+	rocket = new Rocket(16, 16, *world);
 	//rocket = new Rocket((60, 60), world, 80, 80,"rocket.png");
 	//level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
 	Level::LoadLevel("Level1.txt", "Terrain.png", *world);
@@ -66,6 +66,8 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	int alpha = 0;
 	sf::Texture background;
 	sf::Sprite backgroundSprite;
+	sf::Texture overlayT;
+	sf::Sprite overlayS;
 	sf::Font Font;
 	sf::Text timeText;
 	sf::Event Event;
@@ -86,10 +88,16 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	timeText.setPosition({ 460.f, 25.f });
 	if (!background.loadFromFile("nightLevel.png"))
 	{
-		std::cerr << "Error loading presentation.gif" << std::endl;
+		std::cerr << "Error loading bkground" << std::endl;
+		return (-1);
+	}
+	if (!overlayT.loadFromFile("overlay.png"))
+	{
+		std::cerr << "Error loading overlay" << std::endl;
 		return (-1);
 	}
 	backgroundSprite.setTexture(background);
+	overlayS.setTexture(overlayT);
 	//backgroundSprite.setColor(sf::Color(255, 255, 255, 1));
 	while (Running)
 	{
@@ -120,10 +128,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 
 		App.draw(backgroundSprite);
 		Level::draw(App);
-		PlayerManager::GetInstance()->getPlayer1()->Draw(App, world);
-		//level->draw(App);
 		
-		PlayerManager::GetInstance()->getPlayer2()->Draw(App, world);
 		int deltaTime = deltaClock.getElapsedTime().asSeconds();
 		int p2Time = p2Clock.getElapsedTime().asSeconds();
 		//deltaClock.restart();
@@ -160,6 +165,14 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 			//rocket->ApplyForce();
 		}
 		App.draw(timeText);
+
+		
+		Level::draw(App);
+
+		PlayerManager::GetInstance()->getPlayer1()->Draw(App, world);
+		PlayerManager::GetInstance()->getPlayer2()->Draw(App, world);
+
+		App.draw(overlayS);
 		App.display();
 	}
 

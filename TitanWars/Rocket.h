@@ -18,7 +18,7 @@ private:
 	int m_width, m_height;
 	sf::Sprite rocketSprite;
 	sf::Texture rocketTexture;
-	bool goRocket;
+	bool goRocket = false;
 	
 	
 

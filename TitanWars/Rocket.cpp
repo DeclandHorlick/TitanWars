@@ -5,7 +5,8 @@
 Rocket::Rocket( int width, int height, b2World &m_world)
 {
 	//Player temp(m_world, width, height);
-	
+	m_width = width;
+	m_height = height;
 	rBodyDef.type = b2_dynamicBody; //this will be a dynamic body
 	//rBodyDef.position.Set(100, 100);
 	rBodyDef.userData = this;
@@ -18,8 +19,8 @@ Rocket::Rocket( int width, int height, b2World &m_world)
 	//rFixtureDef.density = 0.f;  // Sets the density of the body
 
 	//circular instead :)
-	rShapee.m_p.Set(0, 0);
-	rShapee.m_radius = 16; 
+	//rShapee.m_p.Set(0, 0);
+	rShapee.m_radius = m_width;
 	rFixtureDef.shape = &rShapee; 
 	rFixtureDef.userData = "Rocket";
 	rFixtureDef.density = 0.f;
@@ -27,12 +28,9 @@ Rocket::Rocket( int width, int height, b2World &m_world)
 	//rocketBody->CreateFixture(&rShapee, 0.0f);
 	
 
-	m_width = width;
-	m_height = height;
+	
 
-	rocketTexture.loadFromFile("Rocket.png");
-	rocketSprite.setOrigin(16, 16);
-	rocketSprite.setTexture(rocketTexture);
+	
 }
 Rocket::~Rocket()
 {
@@ -47,6 +45,9 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 {
 	if (goRocket == true)
 	{
+		rocketTexture.loadFromFile("Rocket.png");
+		rocketSprite.setOrigin(16, 16);
+		rocketSprite.setTexture(rocketTexture);
 		//rocketBody->SetLinearVelocity(b2Vec2(10, 10));
 		/*rocketBody->GetAngularVelocity();
 		rocketBody->SetLinearVelocity(new b2Vec2(force * Math.cos(angle),force * Math.sin(angle)));
@@ -73,6 +74,9 @@ void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
 	{
 		if (goRocket == true)
 		{
+			rocketTexture.loadFromFile("magic.png");
+			rocketSprite.setOrigin(16, 16);
+			rocketSprite.setTexture(rocketTexture);
 			//rocketBody->SetLinearVelocity(b2Vec2(10, 10));
 			/*rocketBody->GetAngularVelocity();
 			rocketBody->SetLinearVelocity(new b2Vec2(force * Math.cos(angle),force * Math.sin(angle)));

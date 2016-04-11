@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 		CollisionResponder collisionResponder;
 		World.SetContactListener(&collisionResponder);
 		//Window creation
-		sf::RenderWindow App(sf::VideoMode(960, 620, 32), "Titan Wars");
+		sf::RenderWindow App(sf::VideoMode(1280, 720, 32), "Titan Wars");
 
 		//Mouse cursor no more visible
 		App.setMouseCursorVisible(false);

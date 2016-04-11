@@ -8,6 +8,8 @@
 //#include "Player.h"
 #include "Rocket.h"
 #include "BodyDestroyer.h"
+#include "Player.h"
+#include "Player2.h"
 //
 class CollisionResponder: public b2ContactListener {
 public:
@@ -45,6 +47,36 @@ public:
 				Block* block = static_cast<Block*>(b);
 				block->blockDeleted = true;
 				BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+			}
+
+
+			//block->blockDeleted = false;
+		}
+		if (fixAType == "Player" && fixBType == "Rocket"
+			|| fixAType == "Rocket" && fixBType == "Player")
+		{
+			if (fixAType == "Player")
+			{
+
+
+
+				b2Body* bodyUserBody = contact->GetFixtureA()->GetBody();
+				//b2Body* rocketBody = contact->GetFixtureB()->GetBody();
+				//static_cast<Block*>(fixAType)->BoxDeleted();
+				//rocketBody->m_radius(32, 32);
+				//Block* block = static_cast<Block*>(a);
+
+				//block->blockDeleted = true;
+				//block->BoxDeleted();
+				//BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+			}
+			else if (fixBType == "Player")
+			{
+				b2Body* bodyUserBody = contact->GetFixtureB()->GetBody();
+				//const_cast<Block*>(fixBType)->BoxDeleted();
+				//Block* block = static_cast<Block*>(b);
+				//block->blockDeleted = true;
+				//BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
 			}
 
 

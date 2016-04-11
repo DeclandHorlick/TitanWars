@@ -28,7 +28,7 @@
 
 Player::Player(b2World &world, int width, int height)
 {
-	
+	Rocket *rocket;
 	//Define a b2body
 	b2BodyDef bodyDef;
 	//bodyDef.type = b2_staticBody;
@@ -37,7 +37,7 @@ Player::Player(b2World &world, int width, int height)
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
-	
+	int health = 200;
 
 	//Define the shape of the body
 	b2PolygonShape shape;
@@ -58,7 +58,11 @@ Player::Player(b2World &world, int width, int height)
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
-	animationRect = sf::IntRect(0, 0, 69, 72);
+
+	cWeaponTexture1.loadFromFile("bomb.png");
+	cWeaponTexture2.loadFromFile("cmagic.png");
+	cWeaponTexture3.loadFromFile("shotgun.png");
+
 	playerSprite.setTextureRect(animationRect);
 	//Define the graphical geometry of the player
 	//sf::Vector2f Sprite = { boxBody->GetPosition().x - (width / 2), boxBody->GetPosition().y - (height / 2), width, height };
@@ -73,9 +77,25 @@ Player::Player(b2World &world, int width, int height)
 	
 	
 	
+	
 }
 void Player::Draw(sf::RenderWindow &App,b2World &world)
 {
+	if (weaponSelected == 0)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture1);
+		cWeaponSprite.setPosition(40, 600);
+	}
+	else if (weaponSelected == 1)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture2);
+		cWeaponSprite.setPosition(40, 600);
+	}
+	else if (weaponSelected == 2)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture3);
+		cWeaponSprite.setPosition(40, 600);
+	}
 	if (_myTitan == "godzilla")
 	{
 		if (animationClock.getElapsedTime().asSeconds() > .25f)
@@ -118,6 +138,7 @@ void Player::Draw(sf::RenderWindow &App,b2World &world)
 	
 	App.draw(playerSprite);
 	App.draw(aimSprite);
+	App.draw(cWeaponSprite);
 	int32 BodyIterator = world.GetBodyCount();
 	std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
 	//std::cout << BodyIterator << std::endl; //making sure theres 2 bodies
@@ -139,10 +160,12 @@ void Player::SetTitan(sf::String &myTitan)
 	_myTitan = myTitan;
 	if (_myTitan == "godzilla")
 	{
+		animationRect = sf::IntRect(0, 0, 69, 72);
 		playerTexture.loadFromFile("godzilla.png");
 	}
 	else
 	{
+		animationRect = sf::IntRect(0, 0, 61, 72);
 		playerTexture.loadFromFile("kingkong.png");
 	}
 	playerSprite.setTexture(playerTexture);
@@ -158,7 +181,7 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	float xVelocity(5.6f);
 	b2Vec2 yVelocity(0, 15);
 	getVelocity = boxBody->GetLinearVelocity();
-
+	
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
@@ -189,17 +212,31 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
 		//rocket->setRocket(true);
+
 		rocket->setRocket(true);
 		rocket->ApplyForce(boxBody->GetPosition(), rotation);
 		rocketSound.play();
 	}
-	if (sf::Event::KeyReleased)
+	
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
 	{
-		if (sf::Keyboard::E)
-		{
-
-		}
+	
+		buttonReleased = false;
+			
 	}
+	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+	{
+		if (weaponSelected == 2)
+		{
+			weaponSelected = 0;
+		}
+		else
+		{
+			weaponSelected += 1;
+		}
+		buttonReleased = true;
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		//rocket->setRocket(true);

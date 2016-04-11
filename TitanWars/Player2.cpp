@@ -37,7 +37,7 @@ Player2::Player2(b2World &world, int width, int height)
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
-
+	int health = 200;
 
 	//Define the shape of the body
 	b2PolygonShape shape;
@@ -57,8 +57,7 @@ Player2::Player2(b2World &world, int width, int height)
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
-	animationRect = sf::IntRect(0, 0, 69, 72);
-	//animationRect = sf::IntRect(0, 0, 61, 72);
+	
 	playerSprite.setTextureRect(animationRect);
 	
 	rotation = aimSprite.getRotation();
@@ -126,10 +125,12 @@ void Player2::SetTitan(sf::String &myTitan)
 	_myTitan = myTitan;
 	if (_myTitan == "godzilla")
 	{
+		animationRect = sf::IntRect(0, 0, 69, 72);
 		playerTexture.loadFromFile("godzilla.png");
 	}
 	else
 	{
+		animationRect = sf::IntRect(0, 0, 61, 72);
 		playerTexture.loadFromFile("kingkong.png");
 	}
 	playerSprite.setTexture(playerTexture);
@@ -173,13 +174,6 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 		//rocket->setRocket(true);
 		rocket->ApplyForce(boxBody->GetPosition(), rotation);
 		rocketSound.play();
-	}
-	if (sf::Event::KeyReleased)
-	{
-		if (sf::Keyboard::E)
-		{
-
-		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{

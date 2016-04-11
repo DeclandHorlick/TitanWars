@@ -12,6 +12,7 @@ class Player {
 	 private:
 			b2Body* boxBody;
 		 	int m_width, m_height;
+			int weaponSelected = 0;
 			sf::Sprite playerSprite;
 			//The final texture 
 			sf::Texture playerTexture;
@@ -29,6 +30,13 @@ class Player {
 			Rocket *rocket;
 			sf::String _myTitan;
 			sf::IntRect animationRect;
+
+			sf::Sprite cWeaponSprite;
+			sf::Texture cWeaponTexture1;
+			sf::Texture cWeaponTexture2;
+			sf::Texture cWeaponTexture3;
+
+			bool buttonReleased;
 
 	  public:
 		    //Rocket *rocket;
