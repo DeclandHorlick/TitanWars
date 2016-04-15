@@ -47,3 +47,15 @@ void PlayerManager::setP2TextureName(sf::String p2TextureName)
 {
 	this->p2TextureName = p2TextureName;
 }
+
+std::vector<Rocket*>* PlayerManager::GetPlayersRockets(int playerNumber)
+{
+	if (playerNumber == 1)
+	{
+		return &myPlayer1->myRockets;
+	}
+	else
+	{
+		return &myPlayer2->myRockets;
+	}
+}

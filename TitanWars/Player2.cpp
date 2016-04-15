@@ -46,6 +46,7 @@ Player2::Player2(b2World &world, int width, int height)
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 0.f;  // Sets the density of the body
 	FixtureDef.shape = &shape; // Sets the shape
+	FixtureDef.restitution = 0.f;
 	FixtureDef.userData = "Player";
 	boxBody->CreateFixture(&FixtureDef); // Apply the fixture definition
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
@@ -57,6 +58,10 @@ Player2::Player2(b2World &world, int width, int height)
 	playerSprite.setTexture(playerTexture);
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
+
+	cWeaponTexture1.loadFromFile("bomb.png");
+	cWeaponTexture2.loadFromFile("cmagic.png");
+	cWeaponTexture3.loadFromFile("shotgun.png");
 	
 	playerSprite.setTextureRect(animationRect);
 	
@@ -74,6 +79,21 @@ Player2::Player2(b2World &world, int width, int height)
 }
 void Player2::Draw(sf::RenderWindow &App, b2World &world)
 {
+	if (weaponSelected == 0)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture1);
+		cWeaponSprite.setPosition(1000, 600);
+	}
+	else if (weaponSelected == 1)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture2);
+		cWeaponSprite.setPosition(1000, 600);
+	}
+	else if (weaponSelected == 2)
+	{
+		cWeaponSprite.setTexture(cWeaponTexture3);
+		cWeaponSprite.setPosition(1000, 600);
+	}
 	if (_myTitan == "godzilla")
 	{
 		if (animationClock.getElapsedTime().asSeconds() > .25f)
@@ -100,7 +120,7 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 			animationClock.restart();
 		}
 	}
-	b2Vec2 bodypos = boxBody->GetPosition();
+	bodypos = boxBody->GetPosition();
 	playerSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	aimSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	if (rotation < 270 && rotation > 0)
@@ -116,6 +136,7 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 	
 	App.draw(playerSprite);
 	App.draw(aimSprite);
+	App.draw(cWeaponSprite);
 	int32 BodyIterator = world.GetBodyCount();
 	std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
 	
@@ -146,17 +167,31 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-
-		boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
-		goingRight = false;
-
+		if (bodypos.x >= 10)
+		{
+			boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
+			goingRight = false;
+		}
+		else
+		{
+			boxBody->SetLinearVelocity(b2Vec2(0, 0));
+		}
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
+		if (bodypos.x <= 1190)
+		{
 
-		boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
-		goingRight = true;
+			boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
+			goingRight = true;
+		}
+		else
+		{
+			boxBody->SetLinearVelocity(b2Vec2(0, 0));
+		}
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 
@@ -169,18 +204,42 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 
 
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
+		buttonRoleased = false;
 		//rocket->setRocket(true);
-		rocket->ApplyForce(boxBody->GetPosition(), rotation);
-		rocketSound.play();
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		//rocket->setRocket(true);
-		rocket->ApplyForceShotgun(boxBody->GetPosition(), rotation);
-		rocketSound.play();
+		if (myRockets.size() == 0)
+		{
 
+			myRockets.push_back(new Rocket(2, 16, rotation, boxBody->GetPosition(), world));
+			myRockets[0]->isRocketAlive();
+			
+			rocketSound.play();
+		}
+		buttonRoleased = true;
+		//playerTurn = false;
+
+	}
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+	{
+
+		buttonReleased = false;
+
+	}
+	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+	{
+		if (weaponSelected == 2)
+		{
+			weaponSelected = 0;
+		}
+		else
+		{
+			weaponSelected += 1;
+		}
+		buttonReleased = true;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{

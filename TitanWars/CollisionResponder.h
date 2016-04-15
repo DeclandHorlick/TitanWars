@@ -22,31 +22,60 @@ public:
 		void* a = contact->GetFixtureA()->GetBody()->GetUserData();
 		void* b = contact->GetFixtureB()->GetBody()->GetUserData();
 
-		if (fixAType == "Rocket" && fixBType == "Block"
-			|| fixAType == "Block" && fixBType == "Rocket") 
+		if ((fixAType == "Rocket" && fixBType == "Block")
+			|| (fixAType == "Block" && fixBType == "Rocket")) 
 		{
-			if (fixAType == "Block") 
+			if (fixAType == "Block")
 			{
 
+				b2Body* bodyUserBody = contact->GetFixtureA()->GetBody();
+				b2Body* rocketBody = contact->GetFixtureB()->GetBody();
+				b2Shape* rocketShape = contact->GetFixtureB()->GetShape();
+				rocketShape->m_radius = 64;
 
-
-				b2Body* bodyUserBody= contact->GetFixtureA()->GetBody();
-				//b2Body* rocketBody = contact->GetFixtureB()->GetBody();
-				//static_cast<Block*>(fixAType)->BoxDeleted();
-				//rocketBody->m_radius(32, 32);
 				Block* block = static_cast<Block*>(a);
+				Rocket* rocket = static_cast<Rocket*>(b);
 
-				block->blockDeleted = true;
-				//block->BoxDeleted();
-				BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+				if (!block->blockDeleted)
+				{
+					block->blockDeleted = true;
+					//block->BoxDeleted();
+					BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+				}
+				if (!rocket->rocketDeleted)
+				{
+					rocket->rocketDeleted = true;
+					PlayerManager::GetInstance()->GetPlayersRockets(rocket->m_owner)->clear();
+					BodyDestroyer::GetInstance()->AddBody(rocketBody);
+					PlayerManager::GetInstance()->getPlayer1()->player1Turn = !PlayerManager::GetInstance()->getPlayer1()->player1Turn;
+					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
+				}
+
 			}
 			else if (fixBType == "Block") 
 			{
+				b2Body* rocketBody = contact->GetFixtureA()->GetBody();
 				b2Body* bodyUserBody = contact->GetFixtureB()->GetBody();
+				b2Shape* rocketShape = contact->GetFixtureB()->GetShape();
+				rocketShape->m_radius = 64;
 				//const_cast<Block*>(fixBType)->BoxDeleted();
 				Block* block = static_cast<Block*>(b);
-				block->blockDeleted = true;
-				BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+				Rocket* rocket = static_cast<Rocket*>(a);
+
+				if (!block->blockDeleted)
+				{
+					block->blockDeleted = true;
+					//block->BoxDeleted();
+					BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
+				}
+				if (!rocket->rocketDeleted)
+				{
+					rocket->rocketDeleted = true;
+					PlayerManager::GetInstance()->GetPlayersRockets(rocket->m_owner)->clear();
+					BodyDestroyer::GetInstance()->AddBody(rocketBody);
+					PlayerManager::GetInstance()->getPlayer1()->player1Turn = !PlayerManager::GetInstance()->getPlayer1()->player1Turn;
+					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
+				}
 			}
 
 
@@ -61,9 +90,7 @@ public:
 
 
 				b2Body* bodyUserBody = contact->GetFixtureA()->GetBody();
-				//b2Body* rocketBody = contact->GetFixtureB()->GetBody();
-				//static_cast<Block*>(fixAType)->BoxDeleted();
-				//rocketBody->m_radius(32, 32);
+				
 				//Block* block = static_cast<Block*>(a);
 
 				//block->blockDeleted = true;

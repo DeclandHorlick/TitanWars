@@ -17,11 +17,13 @@ Block::Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Sprit
 	myBodyDef.userData = this;
 
 	blockBody = m_world.CreateBody(&myBodyDef);
+	blockBody->SetUserData(this);
 	//Define the shape 
 	//b2PolygonShape shape;
 	myShape.SetAsBox(width * 0.5f, height * 0.5f);
 	
-	myBodyFixtureDef.density = 0.f;  // Sets the density of the body
+	myBodyFixtureDef.density = 10.f;  // Sets the density of the body
+	myBodyFixtureDef.restitution = 0.f;
 	myBodyFixtureDef.shape = &myShape; // Sets the shape
 	myBodyFixtureDef.userData = "Block";
 	blockBody->CreateFixture(&myBodyFixtureDef); // Apply the fixture definition

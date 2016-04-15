@@ -19,6 +19,7 @@ public:
 	void createPlayers(b2World &world, int width, int height);
 	void setP1TextureName(sf::String p1TextureName);
 	void setP2TextureName(sf::String p2TextureName);
+	std::vector<Rocket*>* GetPlayersRockets(int playerNumber);
 	static PlayerManager* GetInstance();
 
 

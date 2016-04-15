@@ -2,49 +2,40 @@
 #include "Rocket.h"
 
 
-Rocket::Rocket( int width, int height, b2World &m_world)
+Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world)
 {
-	//Player temp(m_world, width, height);
-	m_width = width;
-	m_height = height;
-	rBodyDef.type = b2_dynamicBody; //this will be a dynamic body
-	//rBodyDef.position.Set(100, 100);
-	rBodyDef.userData = this;
-	
-	rBodyDef.angle = 45; //set the starting angle
-	
+	//if (rocketAlive)
+	//{
+		m_owner = owner;
+		//Player temp(m_world, width, height);
+		m_width = width;
+		rocketDeleted = false;
+		rBodyDef.type = b2_dynamicBody; //this will be a dynamic body
+		//rBodyDef.position.Set(100, 100);
+		rBodyDef.userData = this;
 
-	rocketBody = m_world.CreateBody(&rBodyDef);
-	//rShape.SetAsBox(width * 0.5f, height * 0.5f);
-	//rFixtureDef.density = 0.f;  // Sets the density of the body
+		rBodyDef.angle = 45; //set the starting angle
 
-	//circular instead :)
-	//rShapee.m_p.Set(0, 0);
-	rShapee.m_radius = m_width;
-	rFixtureDef.shape = &rShapee; 
-	rFixtureDef.userData = "Rocket";
-	rFixtureDef.density = 0.f;
-	rocketBody->CreateFixture(&rFixtureDef);
-	//rocketBody->CreateFixture(&rShapee, 0.0f);
-	
 
-	
+		rocketBody = m_world.CreateBody(&rBodyDef);
+		rocketBody->SetUserData(this);
+		//rShape.SetAsBox(width * 0.5f, height * 0.5f);
+		//rFixtureDef.density = 0.f;  // Sets the density of the body
 
-	
-}
-Rocket::~Rocket()
-{
-}
-void Rocket::Draw(sf::RenderWindow &window){
-	b2Vec2 rocketPos = rocketBody->GetPosition();
-	rocketSprite.setPosition(sf::Vector2f(rocketPos.x, rocketPos.y));
-	window.draw(rocketSprite);
-}
+		//circular instead :)
+		//rShapee.m_p.Set(0, 0);
+		rShapee.m_radius = m_width;
+		rFixtureDef.shape = &rShapee;
+		rFixtureDef.userData = "Rocket";
+		rFixtureDef.density = .0001f;
+		rFixtureDef.restitution = .3f;
+		rocketBody->CreateFixture(&rFixtureDef);
+		//rocketBody->CreateFixture(&rShapee, 0.0f);
 
-void Rocket::ApplyForce(b2Vec2 pos, float angle)
-{
-	if (goRocket == true)
-	{
+
+
+		//if (goRocket == true)
+		//{
 		rocketTexture.loadFromFile("Rocket.png");
 		rocketSprite.setOrigin(16, 16);
 		rocketSprite.setTexture(rocketTexture);
@@ -53,13 +44,13 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 		rocketBody->SetLinearVelocity(new b2Vec2(force * Math.cos(angle),force * Math.sin(angle)));
 		rocketBody->SetAngle(angle);
 		rockteBody->SetAngularDamping(1.5);*/
-
+		
 		rocketBody->SetAngularVelocity(1);
 		rocketBody->ApplyTorque(20, goRocket);
 		goRocket = false;
-	}
-	if (goRocket == false)
-	{
+		//}
+		//if (goRocket == false)
+		//{
 		float distanceToAimer = 100.0f;
 		float speed = 50;
 		rocketBody->SetAwake(true);
@@ -68,7 +59,35 @@ void Rocket::ApplyForce(b2Vec2 pos, float angle)
 		rocketSprite.setRotation(angle);
 		rocketBody->SetLinearVelocity(b2Vec2(cos(angle * DEG_TO_RAD)* speed, sin(angle * DEG_TO_RAD)* speed));	//Multiply by SPEED here
 
+		//}
+	//}
+}
+Rocket::~Rocket()
+{
+}
+bool Rocket::isRocketDeleted()
+{
+	rocketDeleted = true;
+	return rocketDeleted;
+}
+bool Rocket::isRocketAlive()
+{
+	rocketAlive = true;
+	return rocketAlive;
+}
+
+void Rocket::Draw(sf::RenderWindow &window){
+	if (!rocketDeleted)
+	{
+		b2Vec2 rocketPos = rocketBody->GetPosition();
+		rocketSprite.setPosition(sf::Vector2f(rocketPos.x, rocketPos.y));
+		window.draw(rocketSprite);
 	}
+}
+
+void Rocket::ApplyForce(b2Vec2 pos, float angle)
+{
+	
 }
 void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
 	{

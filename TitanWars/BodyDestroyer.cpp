@@ -15,7 +15,7 @@ BodyDestroyer* BodyDestroyer::GetInstance() {
 
 BodyDestroyer* BodyDestroyer::GetInstance(b2World* w) {
 	if (!instanceFlag)
-	{
+	{ 
 		instance = new BodyDestroyer(w);
 		instanceFlag = true;
 		return instance;
@@ -38,8 +38,8 @@ void BodyDestroyer::DestroyBodies() {
 	int size = bodies.size();
 
 	for (int i = 0; i < size; i++) {
+		if (bodies[i]->GetLinearDamping() >= 0)
 		world->DestroyBody(bodies[i]);
 	}
-
 	bodies.clear();
 }

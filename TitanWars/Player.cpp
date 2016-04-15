@@ -33,7 +33,7 @@ Player::Player(b2World &world, int width, int height)
 	b2BodyDef bodyDef;
 	//bodyDef.type = b2_staticBody;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = b2Vec2(1.3f, 1);
+	bodyDef.position = b2Vec2(20, 0);
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
@@ -47,6 +47,7 @@ Player::Player(b2World &world, int width, int height)
 	FixtureDef.density = 0.f;  // Sets the density of the body
 	FixtureDef.shape = &shape; // Sets the shape
 	FixtureDef.userData = "Player";
+	FixtureDef.restitution = 0.f;
 	boxBody->CreateFixture(&FixtureDef); // Apply the fixture definition
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
@@ -122,7 +123,7 @@ void Player::Draw(sf::RenderWindow &App,b2World &world)
 			animationClock.restart();
 		}
 	}
-	b2Vec2 bodypos = boxBody->GetPosition();
+	bodypos = boxBody->GetPosition();
 	playerSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	aimSprite.setPosition(sf::Vector2f(bodypos.x, bodypos.y));
 	if (rotation < 270 && rotation > 0)
@@ -182,40 +183,69 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 	b2Vec2 yVelocity(0, 15);
 	getVelocity = boxBody->GetLinearVelocity();
 	
+	
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			if (bodypos.x >= 10)
+			{
+				boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
+				goingRight = false;
+			}
+			else
+			{
+								boxBody->SetLinearVelocity(b2Vec2(0, 0));
+			}
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			if (bodypos.x <= 1190)
+			{
+
+				boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
+				goingRight = true;
+			}
+			else
+			{
+				boxBody->SetLinearVelocity(b2Vec2(0, 0));
+			}
+		}
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-
-		boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
-		goingRight = false;
-
+		spaceReleased = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-
-		boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
-		goingRight = true;
-		
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (!spaceReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 
 		//jumping = true;
 		//boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -50));
-		if (getVelocity.y == 0)
+		if (getVelocity.y == 0.f)
 		{
-			boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -yVelocity.y));
+ 			boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -yVelocity.y));
 		}
+		spaceReleased = true;
 
 
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
+		buttonRoleased = false;
 		//rocket->setRocket(true);
-
-		rocket->setRocket(true);
-		rocket->ApplyForce(boxBody->GetPosition(), rotation);
-		rocketSound.play();
+	}
+	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
+		if (myRockets.size() == 0)
+		{
+			
+			myRockets.push_back(new Rocket(1, 16, rotation, boxBody->GetPosition(), world));
+			myRockets[0]->isRocketAlive();
+//			
+			rocketSound.play();
+		}
+		buttonRoleased = true;
+		//playerTurn = false;
+		
 	}
 	
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
@@ -237,14 +267,7 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 		buttonReleased = true;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-	{
-		//rocket->setRocket(true);
-		rocket->setRocket(true);
-		rocket->ApplyForceShotgun(boxBody->GetPosition(), rotation);
-		rocketSound.play();
-
-	}
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			if (rotation > 180 || rotation == 0)
@@ -266,7 +289,11 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 
 	}
 }
-
+int Player::setHealth(int lostHealth)
+{
+	health -= lostHealth;
+	return health;
+}
 //void Player::onBeginContact(CollisionResponder* other) {
 //	printf("++contact++");
 //	if (dynamic_cast<Block*>(other)) {

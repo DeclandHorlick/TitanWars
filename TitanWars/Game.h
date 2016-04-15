@@ -18,6 +18,7 @@ class Game : public cScreen
 {
 private:
 	
+	
 	float posx;
 	float posy;
 	sf::RectangleShape Rectangle;
@@ -26,7 +27,7 @@ private:
 	Player2* player2;
 	Level *level;
 	Rocket *rocket;
-	
+	//std::vector<Rocket*> myRockets;
 	sf::SoundBuffer musicBuffer;
 	sf::Sound mainMusic;
 	int elapsedTime;
@@ -35,6 +36,7 @@ private:
 	
 public:
 	//Game Init(void);
+	int playerTurn;
 	Game(b2World* world);
 	~Game(){ delete player, delete level; };
 	virtual int Run(sf::RenderWindow &App, b2World &world);
@@ -49,7 +51,8 @@ Game::Game(b2World* world)
 
 	//world->SetContactListener(&collisionResponder);
 	PlayerManager::GetInstance()->createPlayers(*world, 80, 80);
-	rocket = new Rocket(16, 16, *world);
+	//myRockets.push_back(new  Rocket(16, 16, *world));
+	//rocket = new Rocket(16, 16, *world);
 	//rocket = new Rocket((60, 60), world, 80, 80,"rocket.png");
 	//level = new Level(world, 27.66f, 4.f);//world, 26.66f, 4.f
 	Level::LoadLevel("Level1.txt", "Terrain.png", *world);
@@ -99,10 +102,13 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	backgroundSprite.setTexture(background);
 	overlayS.setTexture(overlayT);
 	//backgroundSprite.setColor(sf::Color(255, 255, 255, 1));
+
+
+
 	while (Running)
 	{
 		BodyDestroyer::GetInstance()->DestroyBodies();
-		
+
 		//*level;
 		while (App.pollEvent(Event))
 		{
@@ -128,42 +134,76 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 
 		App.draw(backgroundSprite);
 		Level::draw(App);
-		
+
 		int deltaTime = deltaClock.getElapsedTime().asSeconds();
 		int p2Time = p2Clock.getElapsedTime().asSeconds();
 		//deltaClock.restart();
 		if (deltaTime < 62)
 		{
-			if (deltaTime >= 0 && deltaTime <= 30)
+			if (PlayerManager::GetInstance()->getPlayer1()->player1Turn == true)
 			{
-				PlayerManager::GetInstance()->getPlayer1()->Update(App, world, rocket);
-				std::string s = std::to_string(deltaTime);
-				timeText.setString(s);
-				//std::cerr << "This is the time we need = " << deltaTime << std::endl;
-				p2Clock.restart();
+				
+					if (deltaTime >= 0 && deltaTime <= 30)
+					{
+						PlayerManager::GetInstance()->getPlayer1()->Update(App, world, rocket);
+						std::string s = std::to_string(30 -deltaTime);
+						timeText.setString(s);
+						//std::cerr << "This is the time we need = " << deltaTime << std::endl;
+						p2Clock.restart();
+						if (deltaTime == 30)
+						{
+							PlayerManager::GetInstance()->getPlayer1()->player1Turn = false;
+							PlayerManager::GetInstance()->getPlayer2()->player2Turn = true;
+						}
+					}
+				
 			}
-			else if (p2Time >= 0 && p2Time <= 30)
+			
+			else if (p2Time >= 0 && p2Time <= 30 && PlayerManager::GetInstance()->getPlayer2()->player2Turn == true)
 			{
 				PlayerManager::GetInstance()->getPlayer2()->Update(App, world, rocket);
-				std::string k = std::to_string(p2Time);
+				std::string k = std::to_string(30 - p2Time);
 				timeText.setString(k);
+				deltaClock.restart();
+
+				if (p2Time == 30)
+				{
+					PlayerManager::GetInstance()->getPlayer2()->player2Turn = false;
+					PlayerManager::GetInstance()->getPlayer1()->player1Turn = true;
+				}
+			
 			}
-			else if (deltaTime > 60)
+			else //if (deltaTime > 60)
 			{
 				deltaClock.restart();
 				p2Clock.restart();
 			}
-			
-			
+
+
+		}
+
+
+		//PROBLEMS
+
+
+		//elapsedTime = 0;
+		for (int i = 0; PlayerManager::GetInstance()->getPlayer1()->myRockets.size() > i;i++)
+		{
+
+			if (PlayerManager::GetInstance()->getPlayer1()->myRockets[i]->rocketAlive == true)
+			{
+				PlayerManager::GetInstance()->getPlayer1()->myRockets[i]->Draw(App);
+			}
+		}		
+		for (int i = 0; PlayerManager::GetInstance()->getPlayer2()->myRockets.size() > i; i++)
+		{
+
+			if (PlayerManager::GetInstance()->getPlayer2()->myRockets[i]->rocketAlive == true)
+			{
+				PlayerManager::GetInstance()->getPlayer2()->myRockets[i]->Draw(App);
+			}
 		}
 		
-		//elapsedTime = 0;
-		if (rocket->getRocket() != true)
-		{
-			//rocket = new Rocket(80, 10, world);
-			rocket->Draw(App);
-			//rocket->ApplyForce();
-		}
 		App.draw(timeText);
 
 		

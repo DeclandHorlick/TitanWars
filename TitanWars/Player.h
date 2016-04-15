@@ -35,8 +35,12 @@ class Player {
 			sf::Texture cWeaponTexture1;
 			sf::Texture cWeaponTexture2;
 			sf::Texture cWeaponTexture3;
-
+			
 			bool buttonReleased;
+			bool buttonRoleased;
+			bool spaceReleased;
+			b2Vec2 bodypos;
+			int health = 200;
 
 	  public:
 		    //Rocket *rocket;
@@ -45,8 +49,11 @@ class Player {
 			void Draw(sf::RenderWindow &App,b2World &world);
 			void Update(sf::RenderWindow &App, b2World &world, Rocket *rocket);
 			void SetTitan(sf::String &myTitan);
+			int setHealth(int lostHealth);
 			sf::String GetTitan();
 			~Player(){}
+			std::vector<Rocket*> myRockets;
+			bool player1Turn = true;
 			
 			
 			/*void onBeginContact(CollisionResponder* other)override ;

@@ -20,23 +20,24 @@ private:
 	sf::Texture rocketTexture;
 	bool goRocket = false;
 	
-	
 
 
 public:
-	Rocket( int width, int height, b2World &m_world);
+	Rocket(int owner, int width, float angle, b2Vec2 pos, b2World &m_world);
 	void ApplyForce(b2Vec2 pos, float angle);
 	void ApplyForceShotgun(b2Vec2 pos, float angle);
 	void Draw(sf::RenderWindow &window);
-	
-	void setRocket(bool tempGo)
+	int m_owner;
+	bool rocketDeleted;
+	bool rocketAlive = false;
+
+	/*void setRocket(bool tempGo)
 	{
 		goRocket = tempGo;
 	}
-	bool getRocket()
-	{
-		return goRocket;
-	}
+	*/
+	bool isRocketDeleted();
+	bool isRocketAlive();
 	
 	~Rocket();
 

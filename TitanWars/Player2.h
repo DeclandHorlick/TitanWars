@@ -12,6 +12,7 @@ class Player2 {
 private:
 	b2Body* boxBody;
 	int m_width, m_height;
+	int weaponSelected = 0;
 	sf::Sprite playerSprite;
 	//The final texture 
 	sf::Texture playerTexture;
@@ -28,16 +29,28 @@ private:
 	bool goingRight = true;
 	Rocket *rocket;
 	sf::String _myTitan;
+	sf::IntRect animationRect;
+
+	sf::Sprite cWeaponSprite;
+	sf::Texture cWeaponTexture1;
+	sf::Texture cWeaponTexture2;
+	sf::Texture cWeaponTexture3;
+
+	bool buttonReleased;
+	bool buttonRoleased;
+	b2Vec2 bodypos;
 
 public:
 	//Rocket *rocket;
 	bool touchingPlat;
 	Player2(b2World &world, int width, int height);
-	void SetTitan(sf::String &myTitan);
 	void Draw(sf::RenderWindow &App, b2World &world);
 	void Update(sf::RenderWindow &App, b2World &world, Rocket *rocket);
+	void SetTitan(sf::String &myTitan);
+	sf::String GetTitan();
 	~Player2(){}
-	sf::IntRect animationRect;
+	std::vector<Rocket*> myRockets;
+	bool player2Turn = false;
 	/*void onBeginContact(CollisionResponder* other)override ;
 	void onEndContact(CollisionResponder* other)override ;
 	*/

@@ -18,6 +18,8 @@ private:
 
 	sf::Texture myTexture;
 	sf::Sprite sprite;
+	bool addCollidingList = false;
+
 	
 public:
 	bool blockDeleted;
