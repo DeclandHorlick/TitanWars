@@ -90,6 +90,7 @@
     <ClInclude Include="BodyDestroyer.h" />
     <ClInclude Include="CharacterSelect.h" />
     <ClInclude Include="CollisionResponder.h" />
+    <ClInclude Include="EndGame.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Menu.h" />

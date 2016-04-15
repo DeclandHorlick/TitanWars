@@ -114,7 +114,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(gozillaS);
 							
-							return (2);
+							return (3);
 						}
 						else
 						{
@@ -122,7 +122,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(kingS);
 							
-							return(2);
+							return(3);
 						}
 					}
 					else if (selection == 0)

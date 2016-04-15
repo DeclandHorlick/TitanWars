@@ -3,18 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 #include "SFML\Audio.hpp"
+#include "PlayerManager.h"
 
 class Menu : public cScreen
 {
 private:
 	int alpha_max;
 	int alpha_div;
-	bool playing;
+	
 	sf::SoundBuffer godzillaBuffer;
 	sf::Sound godzillaSound;
+	bool playing;
 public:
 	Menu(void);
 	virtual int Run(sf::RenderWindow &App, b2World &world);
+ 
 };
 
 Menu::Menu(void)
@@ -141,11 +144,16 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 		App.clear();
 		//Drawing
 		App.draw(Sprite);
+		
 		if (alpha == alpha_max)
 		{
 			if (playing)
 			{
 				App.draw(Menu3);
+				if (PlayerManager::GetInstance()->getPlayer1()->getHealth() <= 0 || PlayerManager::GetInstance()->getPlayer2()->getHealth() <= 0)
+				{
+					playing = false;
+				}
 			}
 			else
 			{

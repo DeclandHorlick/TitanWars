@@ -37,7 +37,7 @@ Player::Player(b2World &world, int width, int height)
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
-	int health = 200;
+	
 
 	//Define the shape of the body
 	b2PolygonShape shape;
@@ -60,6 +60,11 @@ Player::Player(b2World &world, int width, int height)
 	aimSprite.setOrigin(-42.5, 0);
 	aimSprite.setTexture(aimTexture);
 
+	powerTexture.loadFromFile("bigBoom.png");
+	powerSprite.setOrigin(0, -40);
+	powerSprite.setTexture(powerTexture);
+
+
 	cWeaponTexture1.loadFromFile("bomb.png");
 	cWeaponTexture2.loadFromFile("cmagic.png");
 	cWeaponTexture3.loadFromFile("shotgun.png");
@@ -75,7 +80,8 @@ Player::Player(b2World &world, int width, int height)
 	rocketBuffer.loadFromFile("rocketThrow.wav");
 	
 	rocketSound.setBuffer(rocketBuffer);
-	
+	health = 200;
+	power = 1;
 	
 	
 	
@@ -141,7 +147,7 @@ void Player::Draw(sf::RenderWindow &App,b2World &world)
 	App.draw(aimSprite);
 	App.draw(cWeaponSprite);
 	int32 BodyIterator = world.GetBodyCount();
-	std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
+	//std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
 	//std::cout << BodyIterator << std::endl; //making sure theres 2 bodies
 	//for (b2Body* BodyIterator = world.GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
 	//{
@@ -178,11 +184,11 @@ sf::String Player::GetTitan()
 }
 void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 {
-	sf::Event Event;
+	sf::Event event;
 	float xVelocity(5.6f);
 	b2Vec2 yVelocity(0, 15);
 	getVelocity = boxBody->GetLinearVelocity();
-	
+	App.setKeyRepeatEnabled(true);
 	
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -233,25 +239,41 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 		buttonRoleased = false;
 		//rocket->setRocket(true);
 	}
-	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		if (myRockets.size() == 0)
-		{
-			
-			myRockets.push_back(new Rocket(1, 16, rotation, boxBody->GetPosition(), world));
-			myRockets[0]->isRocketAlive();
-//			
-			rocketSound.play();
-		}
-		buttonRoleased = true;
-		//playerTurn = false;
-		
+		powerSprite.setPosition(bodypos.x, bodypos.y+80);
+		powerSprite.setScale(power, 1);
+		power += 1;
+		App.draw(powerSprite);
+		//rocket->setRocket(true);
 	}
-	
+	while (App.pollEvent(event))
+	{
+		App.setKeyRepeatEnabled(false);
+		if (event.type == sf::Event::KeyReleased)
+		{
+			if (!buttonReleased && event.key.code == sf::Keyboard::E)
+			{
+				if (myRockets.size() == 0)
+				{
+
+					myRockets.push_back(new Rocket(1, 16, rotation, boxBody->GetPosition(), world, power/10));
+					myRockets[0]->isRocketAlive();
+					//			
+					rocketSound.play();
+				}
+				buttonRoleased = true;
+				power = 1;
+
+			}
+		}
+
+	}
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
 	{
 	
 		buttonReleased = false;
+		std::cout << health << std::endl;
 			
 	}
 	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
@@ -292,6 +314,10 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 int Player::setHealth(int lostHealth)
 {
 	health -= lostHealth;
+	return health;
+}
+int Player::getHealth()
+{
 	return health;
 }
 //void Player::onBeginContact(CollisionResponder* other) {

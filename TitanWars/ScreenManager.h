@@ -8,4 +8,5 @@
 #include "Menu.h"
 #include "Game.h"
 #include "CharacterSelect.h"
+#include "EndGame.h"
 #endif // SCREENS_HPP_INCLUDED

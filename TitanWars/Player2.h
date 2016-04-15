@@ -36,9 +36,14 @@ private:
 	sf::Texture cWeaponTexture2;
 	sf::Texture cWeaponTexture3;
 
+	sf::Sprite powerSprite;
+	sf::Texture powerTexture;
+
 	bool buttonReleased;
 	bool buttonRoleased;
 	b2Vec2 bodypos;
+
+	int health = 200;
 
 public:
 	//Rocket *rocket;
@@ -51,6 +56,8 @@ public:
 	~Player2(){}
 	std::vector<Rocket*> myRockets;
 	bool player2Turn = false;
+	int getHealth();
+	int setHealth(int lostHealth);
 	/*void onBeginContact(CollisionResponder* other)override ;
 	void onEndContact(CollisionResponder* other)override ;
 	*/

@@ -53,7 +53,9 @@ int main(int argc, char** argv)
 
 		CharacterSelect s1;
 		Screens.push_back(&s1);
-
+		
+		EndGame s3;
+		Screens.push_back(&s3);
 
 		bool gameLoaded = false;
 
@@ -62,14 +64,19 @@ int main(int argc, char** argv)
 		{
 
 			screen = Screens[screen]->Run(App,World);
-			if (screen == 2 && !gameLoaded)
+			if (screen == 3 && !gameLoaded)
 			{
 				Game s2(&World);
 				Screens.push_back(&s2);
 				gameLoaded = true;
 			}
+			else
+			{
+				gameLoaded = false;
+				
+			}
 		}
-
+		
 		return EXIT_SUCCESS;
 }
 

@@ -35,12 +35,16 @@ class Player {
 			sf::Texture cWeaponTexture1;
 			sf::Texture cWeaponTexture2;
 			sf::Texture cWeaponTexture3;
+
+			sf::Sprite powerSprite;
+			sf::Texture powerTexture;
 			
 			bool buttonReleased;
 			bool buttonRoleased;
 			bool spaceReleased;
 			b2Vec2 bodypos;
-			int health = 200;
+			int health;
+			int power;
 
 	  public:
 		    //Rocket *rocket;
@@ -53,6 +57,7 @@ class Player {
 			sf::String GetTitan();
 			~Player(){}
 			std::vector<Rocket*> myRockets;
+			int getHealth();
 			bool player1Turn = true;
 			
 			

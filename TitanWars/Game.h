@@ -214,6 +214,10 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 
 		App.draw(overlayS);
 		App.display();
+		if (PlayerManager::GetInstance()->getPlayer1()->getHealth() <= 0 || PlayerManager::GetInstance()->getPlayer2()->getHealth() <= 0)
+		{
+			return(2);
+		}
 	}
 
 	//Never reaching this point normally, but just in case, exit the application

@@ -2,7 +2,7 @@
 #include "Rocket.h"
 
 
-Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world)
+Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world, int myPower)
 {
 	//if (rocketAlive)
 	//{
@@ -45,14 +45,14 @@ Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world)
 		rocketBody->SetAngle(angle);
 		rockteBody->SetAngularDamping(1.5);*/
 		
-		rocketBody->SetAngularVelocity(1);
+		//rocketBody->SetAngularVelocity(1);
 		rocketBody->ApplyTorque(20, goRocket);
 		goRocket = false;
 		//}
 		//if (goRocket == false)
 		//{
 		float distanceToAimer = 100.0f;
-		float speed = 50;
+		float speed = myPower;
 		rocketBody->SetAwake(true);
 		rocketBody->SetGravityScale(3);
 		rocketBody->SetTransform(pos + (b2Vec2(cos(angle * DEG_TO_RAD)* distanceToAimer, sin(angle * DEG_TO_RAD)* distanceToAimer)), angle);

@@ -37,7 +37,7 @@ Player2::Player2(b2World &world, int width, int height)
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
-	int health = 200;
+	health = 200;
 
 	//Define the shape of the body
 	b2PolygonShape shape;
@@ -47,7 +47,7 @@ Player2::Player2(b2World &world, int width, int height)
 	FixtureDef.density = 0.f;  // Sets the density of the body
 	FixtureDef.shape = &shape; // Sets the shape
 	FixtureDef.restitution = 0.f;
-	FixtureDef.userData = "Player";
+	FixtureDef.userData = "Player2";
 	boxBody->CreateFixture(&FixtureDef); // Apply the fixture definition
 	//boxBody->ApplyForce(velocity, bodyDef.position, true);
 	m_width = width;
@@ -138,7 +138,7 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 	App.draw(aimSprite);
 	App.draw(cWeaponSprite);
 	int32 BodyIterator = world.GetBodyCount();
-	std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
+	//std::cout << playerSprite.getPosition().x << "  " << playerSprite.getPosition().y << std::endl;
 	
 }
 void Player2::SetTitan(sf::String &myTitan)
@@ -214,7 +214,7 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 		if (myRockets.size() == 0)
 		{
 
-			myRockets.push_back(new Rocket(2, 16, rotation, boxBody->GetPosition(), world));
+			myRockets.push_back(new Rocket(2, 16, rotation, boxBody->GetPosition(), world,50));
 			myRockets[0]->isRocketAlive();
 			
 			rocketSound.play();
@@ -261,4 +261,13 @@ void Player2::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 
 
 	}
+}
+int Player2::setHealth(int lostHealth)
+{
+	health -= lostHealth;
+	return health;
+}
+int Player2::getHealth()
+{
+	return health;
 }

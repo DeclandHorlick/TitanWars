@@ -23,7 +23,7 @@ private:
 
 
 public:
-	Rocket(int owner, int width, float angle, b2Vec2 pos, b2World &m_world);
+	Rocket(int owner, int width, float angle, b2Vec2 pos, b2World &m_world,int myPower);
 	void ApplyForce(b2Vec2 pos, float angle);
 	void ApplyForceShotgun(b2Vec2 pos, float angle);
 	void Draw(sf::RenderWindow &window);
