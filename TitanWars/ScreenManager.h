@@ -9,4 +9,6 @@
 #include "Game.h"
 #include "CharacterSelect.h"
 #include "EndGame.h"
+#include "LevelSelect.h"
+#include "HowToPlay.h"
 #endif // SCREENS_HPP_INCLUDED

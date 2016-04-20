@@ -22,6 +22,7 @@ public:
 	{
 		instanceFlag = false;
 	}
+	void Reset();
 private:
 	BlockManager()
 	{
@@ -30,7 +31,9 @@ private:
 	std::list<Block> platforms;
 	static bool instanceFlag;
 	static BlockManager* instance;
-	static std::vector<Block*> blocks;
+	static std::vector<Block*> blocks; 
+	
+
 
 };
 #endif

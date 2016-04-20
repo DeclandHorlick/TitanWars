@@ -7,6 +7,9 @@
 #include "SFML/OpenGL.hpp" 
 #include "SFML/Audio.hpp"
 #include "Rocket.h"
+#include "Rifle.h"
+#include "Car.h"
+
 
 class Player2 {
 private:
@@ -41,20 +44,41 @@ private:
 
 	bool buttonReleased;
 	bool buttonRoleased;
+	bool powerSwitch = false;
+
 	b2Vec2 bodypos;
 
 	int health = 200;
+	float power;
+
+	sf::Font Font;
+	sf::Text nameHealth;
+	std::string s;
+	std::string currentName;
+	std::vector<std::string> myNames;
+
+	b2World * World;
+	int currentMusic = 0;
+	int currenRtMusic = 0;
 
 public:
 	//Rocket *rocket;
 	bool touchingPlat;
 	Player2(b2World &world, int width, int height);
 	void Draw(sf::RenderWindow &App, b2World &world);
-	void Update(sf::RenderWindow &App, b2World &world, Rocket *rocket);
+	void Update(sf::RenderWindow &App, b2World &world);
 	void SetTitan(sf::String &myTitan);
 	sf::String GetTitan();
-	~Player2(){}
+	~Player2()
+	{
+		World->DestroyBody(boxBody);
+	}
+
 	std::vector<Rocket*> myRockets;
+	std::vector<Rifle*> myMagic;
+	std::vector<Car*> myCar;
+
+
 	bool player2Turn = false;
 	int getHealth();
 	int setHealth(int lostHealth);

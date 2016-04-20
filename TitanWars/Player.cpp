@@ -2,6 +2,9 @@
 
 #include "Player.h"
 #include "Block.h"
+#include "BodyDestroyer.h"
+#include "PlayerManager.h"
+#include "SoundManager.h"
 #include <vector> 
 #include <iostream>
 #ifdef _DEBUG
@@ -26,14 +29,16 @@
  #include <iostream>
  #include <string.h>
 
+
 Player::Player(b2World &world, int width, int height)
 {
-	Rocket *rocket;
+	World = &world;
+	//Rocket *rocket;
 	//Define a b2body
 	b2BodyDef bodyDef;
 	//bodyDef.type = b2_staticBody;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = b2Vec2(20, 0);
+	bodyDef.position = b2Vec2(70, 300);
 	bodyDef.userData = this;
 	//Ask the b2Worldto create our body
 	boxBody = world.CreateBody(&bodyDef);
@@ -44,7 +49,7 @@ Player::Player(b2World &world, int width, int height)
 	shape.SetAsBox(width * 0.5f, height * 0.5f);
 	
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 0.f;  // Sets the density of the body
+	FixtureDef.density = 1.2f;  // Sets the density of the body
 	FixtureDef.shape = &shape; // Sets the shape
 	FixtureDef.userData = "Player";
 	FixtureDef.restitution = 0.f;
@@ -61,9 +66,28 @@ Player::Player(b2World &world, int width, int height)
 	aimSprite.setTexture(aimTexture);
 
 	powerTexture.loadFromFile("bigBoom.png");
-	powerSprite.setOrigin(0, -40);
+	powerSprite.setOrigin(0, 80);
 	powerSprite.setTexture(powerTexture);
 
+	
+	
+	myNames.push_back("Gormy : ");
+	myNames.push_back("John : ");
+	myNames.push_back("Ken : ");
+	myNames.push_back("Bren : ");
+	myNames.push_back("Helen : ");
+	myNames.push_back("Enda : ");
+	myNames.push_back("Con : ");
+	myNames.push_back("Jebb : ");
+	myNames.push_back("Ryan : ");
+	myNames.push_back("Andy : ");
+	myNames.push_back("Dill : ");
+	myNames.push_back("Matt : ");
+	myNames.push_back("Dave : ");
+	myNames.push_back("Brian : ");
+	myNames.push_back("Laz : ");
+	int myRandom = rand() % myNames.size();
+	currentName = myNames[myRandom];
 
 	cWeaponTexture1.loadFromFile("bomb.png");
 	cWeaponTexture2.loadFromFile("cmagic.png");
@@ -75,19 +99,33 @@ Player::Player(b2World &world, int width, int height)
 	rotation = aimSprite.getRotation();
 
 	//sound
+	if (!Font.loadFromFile("C:\\Windows\\Fonts\\SLKSCR.ttf"))
+	{
+		std::cerr << "Error loading verdanab.ttf" << std::endl;
+		
+	}
+	health = 20;
+	nameHealth.setFont(Font);
+	nameHealth.setCharacterSize(12);
+	
+	
 	
 	// load something into the sound buffer...
 	rocketBuffer.loadFromFile("rocketThrow.wav");
 	
 	rocketSound.setBuffer(rocketBuffer);
-	health = 200;
-	power = 1;
+	
+	//power = 1;
 	
 	
 	
 }
 void Player::Draw(sf::RenderWindow &App,b2World &world)
 {
+	nameHealth.setPosition({ bodypos.x - 25, bodypos.y + 35 });
+	s = std::to_string(getHealth());
+	nameHealth.setString(currentName + s);
+
 	if (weaponSelected == 0)
 	{
 		cWeaponSprite.setTexture(cWeaponTexture1);
@@ -144,6 +182,7 @@ void Player::Draw(sf::RenderWindow &App,b2World &world)
 	}
 	
 	App.draw(playerSprite);
+	App.draw(nameHealth);
 	App.draw(aimSprite);
 	App.draw(cWeaponSprite);
 	int32 BodyIterator = world.GetBodyCount();
@@ -182,25 +221,157 @@ sf::String Player::GetTitan()
 {
 	return _myTitan;
 }
-void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
+
+
+void Player::Update(sf::RenderWindow &App, b2World &world)
 {
 	sf::Event event;
 	float xVelocity(5.6f);
 	b2Vec2 yVelocity(0, 15);
 	getVelocity = boxBody->GetLinearVelocity();
-	App.setKeyRepeatEnabled(true);
+
+	powerSprite.setPosition(bodypos.x - 20, bodypos.y);
 	
+	//cant shoot multiple
+	if (myRockets.size() == 1)
+	{
+		weaponSelected = 0;
+	}
+	if (myMagic.size() == 1)
+	{
+		weaponSelected = 1;
+	}
+	if (myCar.size() == 1)
+	{
+		weaponSelected = 2;
+	}
+
+
+	if (myRockets.size() == 0 && weaponSelected ==0)
+	{
+		App.draw(powerSprite);
+	}
+	if (myCar.size() == 0 && weaponSelected == 2)
+	{
+		App.draw(powerSprite);
+	}
+	if (power <= 100 && powerSwitch ==false)
+	{
+	
+	power += .5;
+
+		if (power >= 100)
+		{
+			powerSwitch = true;
+		}
+	}
+
+	else if (power >= 0 && powerSwitch == true)
+	{
+		power -= .5;
+		if (power <= 0)
+		{
+			powerSwitch = false;
+		}
+	}
+
+	powerSprite.setScale(power, 1);
+
+
+	if (myRockets.size() != 0)
+	{
+		if (myRockets[0]->getPosition().x < -150 || myRockets[0]->getPosition().x > 1350)
+		{
+			myRockets[0]->rocketDeleted = true;
+			
+			BodyDestroyer::GetInstance()->AddBody(myRockets[0]->getBody());
+
+			player1Turn = false;
+			
+			PlayerManager::GetInstance()->getPlayer2()->player2Turn = true;
+			myRockets.clear();
+		}
+	}
+
+
+	if (myMagic.size() != 0)
+	{
+		if (myMagic[0]->getPosition().x < -150 || myMagic[0]->getPosition().x > 1350)
+		{
+			myMagic[0]->rifleDeleted = true;
+
+			BodyDestroyer::GetInstance()->AddBody(myMagic[0]->getBody());
+
+			player1Turn = false;
+
+			PlayerManager::GetInstance()->getPlayer2()->player2Turn = true;
+
+			
+			std::vector<Rifle*>::iterator it = myMagic.begin();
+			for (; it != myMagic.end();)
+			{
+				delete (*it);
+				it =myMagic.erase(it);
+			}
+			//myMagic.clear();
+		}
+		else if (myMagic[0]->getPosition().y < -500)
+		{
+			myMagic[0]->rifleDeleted = true;
+
+			BodyDestroyer::GetInstance()->AddBody(myMagic[0]->getBody());
+
+			player1Turn = false;
+
+			PlayerManager::GetInstance()->getPlayer2()->player2Turn = true;
+
+			std::vector<Rifle*>::iterator it = myMagic.begin();
+			for (; it != myMagic.end();)
+			{
+				delete (*it);
+				it = myMagic.erase(it);
+			}
+
+			//myMagic.clear();
+		}
+	}
+
+
+	if (myCar.size() != 0)
+	{
+		if (myCar[0]->getPosition().x < -150 || myCar[0]->getPosition().x > 1350)
+		{
+			myCar[0]->carDeleted = true;
+
+			BodyDestroyer::GetInstance()->AddBody(myCar[0]->getBody());
+
+			player1Turn = false;
+
+			PlayerManager::GetInstance()->getPlayer2()->player2Turn = true;
+
+
+			std::vector<Car*>::iterator it = myCar.begin();
+			for (; it != myCar.end();)
+			{
+				delete (*it);
+				it = myCar.erase(it);
+			}
+			
+		}
+
+	}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			if (bodypos.x >= 10)
 			{
+				//need to change to force :/
 				boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
 				goingRight = false;
 			}
 			else
 			{
-								boxBody->SetLinearVelocity(b2Vec2(0, 0));
+				boxBody->SetLinearVelocity(b2Vec2(0, 0));
 			}
 		}
 
@@ -217,63 +388,93 @@ void Player::Update(sf::RenderWindow &App, b2World &world, Rocket *rocket)
 				boxBody->SetLinearVelocity(b2Vec2(0, 0));
 			}
 		}
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		spaceReleased = false;
-	}
-	if (!spaceReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 
-		//jumping = true;
-		//boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -50));
+		
 		if (getVelocity.y == 0.f)
 		{
  			boxBody->SetLinearVelocity(b2Vec2(boxBody->GetLinearVelocity().x, -yVelocity.y));
 		}
-		spaceReleased = true;
+		
 
 
 	}
+
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		buttonRoleased = false;
+		buttonRoleased = true;
 		//rocket->setRocket(true);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	if (buttonRoleased && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		powerSprite.setPosition(bodypos.x, bodypos.y+80);
-		powerSprite.setScale(power, 1);
-		power += 1;
-		App.draw(powerSprite);
-		//rocket->setRocket(true);
-	}
-	while (App.pollEvent(event))
-	{
-		App.setKeyRepeatEnabled(false);
-		if (event.type == sf::Event::KeyReleased)
+		if (weaponSelected == 0)
 		{
-			if (!buttonReleased && event.key.code == sf::Keyboard::E)
+			if (myRockets.size() == 0)
 			{
-				if (myRockets.size() == 0)
+				if (currenRtMusic == 0)
 				{
-
-					myRockets.push_back(new Rocket(1, 16, rotation, boxBody->GetPosition(), world, power/10));
-					myRockets[0]->isRocketAlive();
-					//			
-					rocketSound.play();
+					SoundManager::GetInstance()->bombsAway();
+					currenRtMusic += 1;
 				}
-				buttonRoleased = true;
-				power = 1;
-
+				else if (currenRtMusic == 1)
+				{
+					SoundManager::GetInstance()->eatThis();
+					currenRtMusic = 0;
+				}
+				myRockets.push_back(new Rocket(1, 16, rotation, boxBody->GetPosition(), world, power));
+				myRockets[0]->isRocketAlive();
+				//			
+				//rocketSound.play();
 			}
 		}
-
+		else if (weaponSelected == 1)
+		{
+			if (myMagic.size() == 0)
+			{
+				if (currentMusic == 0)
+				{
+					SoundManager::GetInstance()->puke();
+					currentMusic += 1;
+				}
+				else if (currentMusic == 1)
+				{
+					SoundManager::GetInstance()->puke2();
+					currentMusic += 1;
+				}
+				else
+				{
+					SoundManager::GetInstance()->puke3();
+					currentMusic = 0;
+				}
+				myMagic.push_back(new Rifle(1, 16, rotation, boxBody->GetPosition(), world));
+				myMagic[0]->isRifleAlive();
+				
+				
+				
+			}
+		}
+		else if (weaponSelected == 2)
+		{
+			if (myCar.size() == 0)
+			{
+				SoundManager::GetInstance()->scream();
+				myCar.push_back(new Car(1, 16, rotation, boxBody->GetPosition(), world, power/2));
+				myCar[0]->isCarAlive();
+			}
+		}
+		buttonRoleased = false;
+		power = 1;
+		
+		//rocket->setRocket(true);
 	}
+	
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
 	{
 	
 		buttonReleased = false;
-		std::cout << health << std::endl;
+		//std::cout << health << std::endl;
 			
 	}
 	if (!buttonReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))

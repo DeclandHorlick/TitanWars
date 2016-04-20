@@ -2,7 +2,7 @@
 #include "Rocket.h"
 
 
-Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world, int myPower)
+Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world, float myPower)
 {
 	//if (rocketAlive)
 	//{
@@ -27,7 +27,7 @@ Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world, i
 		rShapee.m_radius = m_width;
 		rFixtureDef.shape = &rShapee;
 		rFixtureDef.userData = "Rocket";
-		rFixtureDef.density = .0001f;
+		rFixtureDef.density = .1f;
 		rFixtureDef.restitution = .3f;
 		rocketBody->CreateFixture(&rFixtureDef);
 		//rocketBody->CreateFixture(&rShapee, 0.0f);
@@ -58,7 +58,10 @@ Rocket::Rocket(int owner, int width, float angle,b2Vec2 pos, b2World &m_world, i
 		rocketBody->SetTransform(pos + (b2Vec2(cos(angle * DEG_TO_RAD)* distanceToAimer, sin(angle * DEG_TO_RAD)* distanceToAimer)), angle);
 		rocketSprite.setRotation(angle);
 		rocketBody->SetLinearVelocity(b2Vec2(cos(angle * DEG_TO_RAD)* speed, sin(angle * DEG_TO_RAD)* speed));	//Multiply by SPEED here
-
+		animationRect = sf::IntRect(0, 0, 62, 62);
+		ExplosionT.loadFromFile("godzilla.png");
+		ExplsionS.setOrigin(16, 16);
+		ExplsionS.setTexture(ExplosionT);
 		//}
 	//}
 }
@@ -84,10 +87,42 @@ void Rocket::Draw(sf::RenderWindow &window){
 		window.draw(rocketSprite);
 	}
 }
-
-void Rocket::ApplyForce(b2Vec2 pos, float angle)
+void Rocket::DrawExplosion(sf::RenderWindow &window)
 {
+	if (playAnimation == true)
+	{
+		while (animationRect.left < 366)
+		{
+			b2Vec2 rocketPos = rocketBody->GetPosition();
+			ExplsionS.setPosition(sf::Vector2f(rocketPos.x, rocketPos.y));
+
+
+
+			if (animationClock.getElapsedTime().asSeconds() > .25f)
+			{
+				if (animationRect.left >= 366)
+					animationRect.left = 0;
+				else
+					animationRect.left += 61;
+
+				ExplsionS.setTextureRect(animationRect);
+				animationClock.restart();
+			}
+			window.draw(ExplsionS);
+		}
+	}
 	
+}
+
+
+b2Vec2 Rocket::getPosition()
+{
+	rocketPos = rocketBody->GetPosition();
+	return rocketPos;
+}
+b2Body* Rocket::getBody()
+{
+	return rocketBody;
 }
 void Rocket::ApplyForceShotgun(b2Vec2 pos, float angle)
 	{

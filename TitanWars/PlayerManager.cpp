@@ -59,3 +59,40 @@ std::vector<Rocket*>* PlayerManager::GetPlayersRockets(int playerNumber)
 		return &myPlayer2->myRockets;
 	}
 }
+std::vector<Rifle*>* PlayerManager::GetPlayersMagic(int playerNumber)
+{
+	if (playerNumber == 1)
+	{
+		return &myPlayer1->myMagic;
+	}
+	else
+	{
+		return &myPlayer2->myMagic;
+	}
+}
+std::vector<Car*>* PlayerManager::GetPlayersCar(int playerNumber)
+{
+	if (playerNumber == 1)
+	{
+		return &myPlayer1->myCar;
+	}
+	else
+	{
+		return &myPlayer2->myCar;
+	}
+}
+void PlayerManager::Reset()
+{
+	delete myPlayer1;
+	delete myPlayer2;
+}
+void PlayerManager::setCurrentLevel(int theLevel)
+{
+	currentLevel = theLevel;
+	
+}
+int PlayerManager::getCurrentLevel()
+{
+	
+	return currentLevel;
+}

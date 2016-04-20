@@ -14,7 +14,7 @@ private:
 	b2BodyDef myBodyDef;
 	b2FixtureDef myBodyFixtureDef;
 	b2PolygonShape myShape;
-	
+	b2World* World;
 
 	sf::Texture myTexture;
 	sf::Sprite sprite;

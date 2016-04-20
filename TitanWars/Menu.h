@@ -14,6 +14,10 @@ private:
 	sf::SoundBuffer godzillaBuffer;
 	sf::Sound godzillaSound;
 	bool playing;
+
+	
+	sf::IntRect animationRect;
+
 public:
 	Menu(void);
 	virtual int Run(sf::RenderWindow &App, b2World &world);
@@ -38,16 +42,21 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 	sf::Text Menu1;
 	sf::Text Menu2;
 	sf::Text Menu3;
+	sf::Text Menu4;
+	sf::Clock animationClock;
 	int menu = 0;
 	godzillaBuffer.loadFromFile("godzillaRoar.wav");
 	godzillaSound.setBuffer(godzillaBuffer);
+	animationRect = { 0, 0, 1300, 726 };
+	
 
-	if (!Texture.loadFromFile("presentation.jpg"))
+	if (!Texture.loadFromFile("menuAni.png"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
 		return (-1);
 	}
 	Sprite.setTexture(Texture);
+
 	Sprite.setColor(sf::Color(255, 255, 255, alpha));
 	if (!Font.loadFromFile("C:\\Windows\\Fonts\\SLKSCR.ttf"))
 	{
@@ -64,6 +73,11 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 	Menu2.setString("Exit");
 	Menu2.setPosition({ 100.f, 160.f });
 
+	Menu4.setFont(Font);
+	Menu4.setCharacterSize(40);
+	Menu4.setString(" Press Space \n for tutorial");
+	Menu4.setPosition({ 20.f, 240.f });
+
 	Menu3.setFont(Font);
 	Menu3.setCharacterSize(60);
 	Menu3.setString("Continue");
@@ -77,6 +91,18 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 	while (Running)
 	{
 		//Verifying events
+		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		{
+			if (animationRect.left >= 3900)
+				animationRect.left = 0;
+			else
+				animationRect.left += 1300;
+
+			Sprite.setTextureRect(animationRect);
+			
+			animationClock.restart();
+		}
+
 		while (App.pollEvent(Event))
 		{
 			
@@ -100,12 +126,16 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 					if (menu == 0 && playing == true)
 					{
 						//get play !
-						return (2);
+						return (5);
+					}
+					else if (menu == 1 && playing == true)
+					{
+						return (3);
 					}
 					else if (menu == 0)
 					{
 						//get play !
-						godzillaSound.play();
+						//godzillaSound.play();
 						playing = true;
 						return (1);
 					}
@@ -115,6 +145,10 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 						return (-1);
 					}
 					break;
+				case sf::Keyboard::Space:
+				{
+					return (4);
+				}
 				default:
 					break;
 				}
@@ -132,12 +166,14 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 			Menu1.setColor(sf::Color(255, 0, 0, 255));
 			Menu2.setColor(sf::Color(255, 255, 255, 255));
 			Menu3.setColor(sf::Color(255, 0, 0, 255));
+			Menu4.setColor(sf::Color(84, 84, 84, 255));
 		}
 		else
 		{
 			Menu1.setColor(sf::Color(255, 255, 255, 255));
 			Menu2.setColor(sf::Color(255, 0, 0, 255));
 			Menu3.setColor(sf::Color(255, 255, 255, 255));
+			Menu4.setColor(sf::Color(84, 84, 84, 255));
 		}
 
 		//Clearing screen
@@ -158,8 +194,10 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 			else
 			{
 				App.draw(Menu1);
+				App.draw(Menu4);
 			}
 			App.draw(Menu2);
+			
 		}
 		App.display();
 	}

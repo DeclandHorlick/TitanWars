@@ -22,7 +22,7 @@ Block::Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Sprit
 	//b2PolygonShape shape;
 	myShape.SetAsBox(width * 0.5f, height * 0.5f);
 	
-	myBodyFixtureDef.density = 10.f;  // Sets the density of the body
+	myBodyFixtureDef.density = 0.f;  // Sets the density of the body
 	myBodyFixtureDef.restitution = 0.f;
 	myBodyFixtureDef.shape = &myShape; // Sets the shape
 	myBodyFixtureDef.userData = "Block";
@@ -32,11 +32,14 @@ Block::Block(b2Vec2 position, int width, int height, b2World &m_world, sf::Sprit
 
 	//Define the graphical geometry of the platfrom
 	
-
+	World = &m_world;
 }
 
 Block::~Block()
 {
+	if (!blockDeleted)
+	World->DestroyBody(blockBody);
+
 }
 void Block::Draw(sf::RenderWindow &window){
 	if (!blockDeleted)

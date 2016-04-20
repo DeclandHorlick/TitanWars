@@ -88,18 +88,23 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockManager.h" />
     <ClInclude Include="BodyDestroyer.h" />
+    <ClInclude Include="Car.h" />
     <ClInclude Include="CharacterSelect.h" />
     <ClInclude Include="CollisionResponder.h" />
     <ClInclude Include="EndGame.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HowToPlay.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="cScreen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player2.h" />
     <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="Rifle.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="ScreenManager.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WeaponManager.h" />
@@ -108,11 +113,14 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockManager.cpp" />
     <ClCompile Include="BodyDestroyer.cpp" />
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player2.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="Rifle.cpp" />
     <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

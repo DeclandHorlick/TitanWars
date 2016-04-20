@@ -1,26 +1,43 @@
-﻿Build started 15/04/2016 22:33:00.
+﻿Build started 20/04/2016 02:50:09.
      1>Project "C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\TitanWars\TitanWars.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./ /I"C:\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\TitanWars.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
-         Player.cpp
-     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\player.cpp(31): warning C4101: 'rocket' : unreferenced local variable
-     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\player.cpp(245): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./ /I"C:\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\TitanWars.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt TitanWars.cpp
+         TitanWars.cpp
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(154): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(192): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(193): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(245): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(254): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(265): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(274): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(285): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(294): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\titanwars.cpp(39): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\game.h(325): warning C4715: 'Game::Run' : not all control paths return a value
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\menu.h(206): warning C4715: 'Menu::Run' : not all control paths return a value
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\characterselect.h(202): warning C4715: 'CharacterSelect::Run' : not all control paths return a value
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\endgame.h(195): warning C4715: 'EndGame::Run' : not all control paths return a value
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\levelselect.h(166): warning C4715: 'LevelSelect::Run' : not all control paths return a value
+     1>c:\users\decland\documents\visual studio 2013\projects\titanwars\titanwars\howtoplay.h(135): warning C4715: 'HowToPlay::Run' : not all control paths return a value
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\Debug\TitanWars.exe" /INCREMENTAL /NOLOGO /LIBPATH:./lib /LIBPATH:"C:\SFML-2.3.2\lib" Box2D.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\Debug\TitanWars.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\Debug\TitanWars.lib" /MACHINE:X86 Debug\Block.obj
          Debug\BlockManager.obj
          Debug\BodyDestroyer.obj
+         Debug\Car.obj
          Debug\Level.obj
          Debug\Player.obj
          Debug\Player2.obj
          Debug\PlayerManager.obj
+         Debug\Rifle.obj
          Debug\Rocket.obj
+         Debug\SoundManager.obj
          Debug\stdafx.obj
          Debug\TitanWars.obj
          Debug\WeaponManager.obj
          lib\Box2D.lib
-     1>LINK : fatal error LNK1104: cannot open file 'C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\Debug\TitanWars.ilk'
-     1>Done Building Project "C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\TitanWars\TitanWars.vcxproj" (Build target(s)) -- FAILED.
+         TitanWars.vcxproj -> C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\Debug\TitanWars.exe
+     1>Done Building Project "C:\Users\Decland\documents\visual studio 2013\Projects\TitanWars\TitanWars\TitanWars.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.23
+Time Elapsed 00:00:01.49

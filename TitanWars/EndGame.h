@@ -118,15 +118,20 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 							//get gozilla
 							//playing = true;
 							//PlayerManager::GetInstance()->setP2TextureName(gozillaS);
-
+							BlockManager::GetInstance()->Reset();
+							PlayerManager::GetInstance()->Reset();
 							return (0);
 						}
 						else if (selection == 1)
 						{
-							return(2);
+							BlockManager::GetInstance()->Reset();
+							PlayerManager::GetInstance()->Reset();
+							return(5);
 						}
 						else
 						{
+							BlockManager::GetInstance()->Reset();
+							PlayerManager::GetInstance()->Reset();
 							return(1);
 						}
 					

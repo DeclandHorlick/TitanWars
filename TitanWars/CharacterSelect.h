@@ -45,12 +45,12 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 	int selection = 0;
 
 
-	if (!godzillaTexture.loadFromFile("godPortait.jpg"))
+	if (!godzillaTexture.loadFromFile("charSelect.png"))
 	{
-		std::cerr << "Error loading godPortait.jpg" << std::endl;
+		std::cerr << "Error loading CHARACTER SELECT.jpg" << std::endl;
 	}
 	godzillaSprite.setTexture(godzillaTexture);
-	godzillaSprite.setColor(sf::Color(255, 255, 255, alpha));
+	godzillaSprite.setColor(sf::Color(255, 255, 255, 255));
 	
 	if (!kingTexture.loadFromFile("kingPortait.jpg"))
 	{
@@ -70,12 +70,12 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 	godzillaText.setFont(Font);
 	godzillaText.setCharacterSize(60);
 	godzillaText.setString("GODZILLA");
-	godzillaText.setPosition({ 100.f, 500.f });
+	godzillaText.setPosition({ 200.f, 600.f });
 
 	kingText.setFont(Font);
 	kingText.setCharacterSize(60);
 	kingText.setString("KINGKONG");
-	kingText.setPosition({ 600.f, 500.f });
+	kingText.setPosition({ 675.f, 600.f });
 
 
 	if (playing)
@@ -114,7 +114,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(gozillaS);
 							
-							return (3);
+							return (2);
 						}
 						else
 						{
@@ -122,7 +122,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(kingS);
 							
-							return(3);
+							return(2);
 						}
 					}
 					else if (selection == 0)
@@ -187,7 +187,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 		App.clear();
 		//Drawing
 		App.draw(godzillaSprite);
-		App.draw(kingSprite);
+		
 
 		if (alpha == alpha_max)
 		{

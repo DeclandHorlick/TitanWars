@@ -15,22 +15,32 @@ private:
 	b2FixtureDef rFixtureDef;
 	//b2PolygonShape rShape;
 	b2CircleShape rShapee;
+
+	b2Vec2 rocketPos;
 	int m_width, m_height;
 	sf::Sprite rocketSprite;
 	sf::Texture rocketTexture;
-	bool goRocket = false;
+
+	sf::Sprite ExplsionS;
+	sf::Texture ExplosionT;
+
 	
+	bool goRocket = false;
+	sf::Clock animationClock;
+	sf::IntRect animationRect;
 
 
 public:
-	Rocket(int owner, int width, float angle, b2Vec2 pos, b2World &m_world,int myPower);
-	void ApplyForce(b2Vec2 pos, float angle);
+	Rocket(int owner, int width, float angle, b2Vec2 pos, b2World &m_world,float myPower);
+	b2Vec2 getPosition();
 	void ApplyForceShotgun(b2Vec2 pos, float angle);
 	void Draw(sf::RenderWindow &window);
+	void DrawExplosion(sf::RenderWindow &window);
 	int m_owner;
 	bool rocketDeleted;
 	bool rocketAlive = false;
-
+	bool playAnimation = false;
+	b2Body* getBody();
 	/*void setRocket(bool tempGo)
 	{
 		goRocket = tempGo;

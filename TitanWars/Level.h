@@ -29,12 +29,14 @@ private:
 
 	
 	static std::vector<sf::Sprite> background; //class variables
-	static std::vector<int> bestTimes;
+	
 	static sf::Texture texture; //class variables
 	static const int SCALE;//class variable
-	static int currentlevel;
+	static int mylevel;
 	static const int MAXLEVELS;
 	std::vector<Block*> blocks;
+
+	int currentLevel;
 
 public:
 
@@ -48,6 +50,7 @@ public:
 	
 	static void draw(sf::RenderWindow& window);
 	static std::vector<std::string>loadALevelFromTextFile(std::string name);
+	
 	
 	
 

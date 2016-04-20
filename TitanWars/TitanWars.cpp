@@ -28,12 +28,15 @@
 #include "ScreenManager.h"
 #include <Box2D/Box2D.h>
 #include "Player.h"
+#include "SoundManager.h"
 #include "CollisionResponder.h"
-
+#include <time.h>
+#include <list>
 
 int main(int argc, char** argv)
 {
 		//Applications variables
+		srand(time(NULL));
 		std::vector<cScreen*> Screens;
 		int screen = 0;
 
@@ -53,25 +56,51 @@ int main(int argc, char** argv)
 
 		CharacterSelect s1;
 		Screens.push_back(&s1);
-		
-		EndGame s3;
+
+		LevelSelect s3;
 		Screens.push_back(&s3);
+		
+		EndGame s4;
+		Screens.push_back(&s4);
+
+		HowToPlay s5;
+		Screens.push_back(&s5);
 
 		bool gameLoaded = false;
-
+		
+		SoundManager::GetInstance()->loadSounds();
+		//SoundManager::GetInstance()->loadSounds();
 		//Main loop
+
+		
 		while (screen >= 0)
 		{
-
+			
 			screen = Screens[screen]->Run(App,World);
-			if (screen == 3 && !gameLoaded)
+			if (screen == 5 && !gameLoaded)
 			{
 				Game s2(&World);
 				Screens.push_back(&s2);
 				gameLoaded = true;
 			}
-			else
+			else if (screen == 3 && gameLoaded == true)
 			{
+				App.clear();
+
+				
+				/*std::list <b2Body*> toDestroy;
+
+				for (b2Body* deletePlz = World.GetBodyList(); deletePlz; deletePlz = deletePlz->GetNext())
+				{
+					toDestroy.push_back(deletePlz);
+				}
+				std::list<b2Body*>::iterator it = toDestroy.begin();
+				for (; it != toDestroy.end();)
+				{
+					World.DestroyBody(*it);
+					it = toDestroy.erase(it);
+				}*/
+				
 				gameLoaded = false;
 				
 			}

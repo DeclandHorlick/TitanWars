@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "BlockManager.h"
+#include "BodyDestroyer.h"
 
 
 bool BlockManager::instanceFlag = false;
@@ -70,6 +71,28 @@ void BlockManager::Update()
 //	return false;
 //}
 
+void BlockManager::Reset()
+{
+	int size = blocks.size();
+
+	for (int i = 0; i < size; i++)
+	{
+		delete blocks[i];
+	}
+	blocks.clear();
+	//std::vector<Block*>::iterator it = blocks.begin();
+	//for (; it != blocks.end();)
+	//{
+	//	if (*it != NULL)
+	//	{
+
+	//		//delete *it;
+	//		it = blocks.erase(it);
+	//	}
+	//	
+	//}
+
+}
 
 
 
