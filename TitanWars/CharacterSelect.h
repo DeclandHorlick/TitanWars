@@ -33,6 +33,8 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 	sf::Event Event;
 	bool Running = true;
 	bool player2selection = false;
+	bool playSwitch = false;
+	bool playSwitch2 = false;
 	sf::Texture godzillaTexture;
 	sf::Sprite godzillaSprite;
 	sf::Texture kingTexture;
@@ -100,11 +102,28 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 				switch (Event.key.code)
 				{
 				case sf::Keyboard::Left:
+				{
+					if (playSwitch2 == true)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = false;
+						playSwitch2 = false;
+
+					}
 					selection = 0;
-					break;
+				}
+				break;
 				case sf::Keyboard::Right:
+				{
+					if (!playSwitch)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = true;
+						playSwitch2 = true;
+					}
 					selection = 1;
-					break;
+				}
+				break;
 				case sf::Keyboard::Return:
 					if (player2selection)
 					{
@@ -113,7 +132,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							//get gozilla
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(gozillaS);
-							
+							SoundManager::GetInstance()->p2Sound();
 							return (2);
 						}
 						else
@@ -121,7 +140,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 							//get kingkong
 							playing = true;
 							PlayerManager::GetInstance()->setP2TextureName(kingS);
-							
+							SoundManager::GetInstance()->p2Sound();
 							return(2);
 						}
 					}
@@ -132,6 +151,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 						PlayerManager::GetInstance()->setP1TextureName(gozillaS);
 						player2selection = true;
 						//return (2);
+						SoundManager::GetInstance()->p1Sound();
 					}
 					else
 					{
@@ -139,6 +159,7 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 						
 						PlayerManager::GetInstance()->setP1TextureName(kingS);
 						player2selection = true;
+						SoundManager::GetInstance()->p1Sound();
 						//return(2);
 					}
 					break;

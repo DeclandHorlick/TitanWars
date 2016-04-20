@@ -15,6 +15,7 @@
 #include "PlayerManager.h"
 #include "BlockManager.h"
 #include "SoundManager.h"
+#include "EffectsManager.h"
 
 
 class Game : public cScreen
@@ -29,6 +30,7 @@ private:
 	Player* player;
 	Player2* player2;
 	Level *level;
+	
 	//Rocket *rocket;
 	//Rocket *rifle;
 	//std::vector<Rocket*> myRockets;
@@ -38,6 +40,8 @@ private:
 	sf::Clock deltaClock;
 	sf::Clock p2Clock;
 	sf::Clock soundEffectClock;
+	sf::IntRect animationRect = { 0, 0, 1200, 480 };
+	
 	
 public:
 	//Game Init(void);
@@ -69,10 +73,9 @@ Game::Game(b2World* world)
 	{
 		Level::LoadLevel("wallLevel.txt", "Terrain.png", *world);
 	}
-	musicBuffer.loadFromFile("mainMusic.wav");
-	mainMusic.setBuffer(musicBuffer);
+	SoundManager::GetInstance()->fight();
 	
-	
+
 	
 }
 
@@ -88,7 +91,14 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	sf::Font Font;
 	sf::Text timeText;
 	sf::Event Event;
+	sf::Texture timerT;
+	sf::Sprite timerS;
+	sf::Texture cloudTexture;
+	sf::Sprite cloudSprite;
+	sf::Clock animationClock;
+
 	bool Running = true;
+	
 	
 	//App.setSize(sf::Vector2u(1200, 640));
 	
@@ -99,6 +109,18 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	{
 		std::cerr << "Error loading verdanab.ttf" << std::endl;
 	}
+	if (!cloudTexture.loadFromFile("cloudAni.png"))
+	{
+		std::cerr << "Error loading presentation.gif" << std::endl;
+		return (-1);
+	}
+	cloudSprite.setTexture(cloudTexture);
+	cloudSprite.setColor(sf::Color(255, 255, 255, 255));
+
+	timerT.loadFromFile("timer.png");
+	timerS.setTexture(timerT);
+	timerS.setPosition(550, 20);
+
 
 	timeText.setFont(Font);
 	timeText.setCharacterSize(60);
@@ -122,6 +144,17 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 	while (Running)
 	{
 		BodyDestroyer::GetInstance()->DestroyBodies();
+		if (animationClock.getElapsedTime().asSeconds() > .6f)
+		{
+			if (animationRect.left >= 3600)
+				animationRect.left = 0;
+			else
+				animationRect.left += 1200;
+
+			cloudSprite.setTextureRect(animationRect);
+
+			animationClock.restart();
+		}
 
 		//*level;
 		while (App.pollEvent(Event))
@@ -148,8 +181,10 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 		//Drawing
 
 		App.draw(backgroundSprite);
-		Level::draw(App);
+		App.draw(cloudSprite);
 
+		Level::draw(App);
+		
 		int myRandom = rand() % 5;
 		int soundTime = soundEffectClock.getElapsedTime().asSeconds();
 		if (soundTime >= 20)
@@ -168,7 +203,7 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 			}
 			else if (myRandom == 3)
 			{
-				SoundManager::GetInstance()->howDareYou();
+				SoundManager::GetInstance()->whatsGoin();
 			}
 			
 			
@@ -300,16 +335,16 @@ int Game::Run(sf::RenderWindow &App, b2World &world)
 
 			}
 		}
-		
+		App.draw(timerS);
 		App.draw(timeText);
-
+		
 		
 		Level::draw(App);
 
 		PlayerManager::GetInstance()->getPlayer1()->Draw(App, world);
 		PlayerManager::GetInstance()->getPlayer2()->Draw(App, world);
-
-
+		EffectsManager::GetInstance()->draw(App);
+		EffectsManager::GetInstance()->update();
 		App.draw(overlayS);
 		App.display();
 		if (PlayerManager::GetInstance()->getPlayer1()->getHealth() <= 0 || PlayerManager::GetInstance()->getPlayer2()->getHealth() <= 0)

@@ -91,7 +91,9 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CharacterSelect.h" />
     <ClInclude Include="CollisionResponder.h" />
+    <ClInclude Include="EffectsManager.h" />
     <ClInclude Include="EndGame.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HowToPlay.h" />
     <ClInclude Include="Level.h" />
@@ -114,6 +116,8 @@
     <ClCompile Include="BlockManager.cpp" />
     <ClCompile Include="BodyDestroyer.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="EffectsManager.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player2.cpp" />

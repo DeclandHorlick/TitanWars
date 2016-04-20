@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 		World.SetContactListener(&collisionResponder);
 		//Window creation
 		sf::RenderWindow App(sf::VideoMode(1200, 700, 32), "Titan Wars");
-
+		
 		//Mouse cursor no more visible
 		App.setMouseCursorVisible(false);
 		
@@ -69,6 +69,7 @@ int main(int argc, char** argv)
 		bool gameLoaded = false;
 		
 		SoundManager::GetInstance()->loadSounds();
+		SoundManager::GetInstance()->mainMusic();
 		//SoundManager::GetInstance()->loadSounds();
 		//Main loop
 

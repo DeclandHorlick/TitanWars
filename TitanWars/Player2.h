@@ -39,6 +39,9 @@ private:
 	sf::Texture cWeaponTexture2;
 	sf::Texture cWeaponTexture3;
 
+	sf::Sprite weaponBkS;
+	sf::Texture weaponBkT;
+
 	sf::Sprite powerSprite;
 	sf::Texture powerTexture;
 
@@ -60,6 +63,8 @@ private:
 	b2World * World;
 	int currentMusic = 0;
 	int currenRtMusic = 0;
+	int currentAnimation = 0;
+	bool switchAnimation = false;
 
 public:
 	//Rocket *rocket;

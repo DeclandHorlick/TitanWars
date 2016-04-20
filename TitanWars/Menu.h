@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "SFML\Audio.hpp"
 #include "PlayerManager.h"
+#include "SoundManager.h"
+
 
 class Menu : public cScreen
 {
@@ -35,6 +37,8 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 {
 	sf::Event Event;
 	bool Running = true;
+	bool playSwitch = false;
+	bool playSwitch2 = false;
 	sf::Texture Texture;
 	sf::Sprite Sprite;
 	int alpha = 0;
@@ -91,7 +95,7 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 	while (Running)
 	{
 		//Verifying events
-		if (animationClock.getElapsedTime().asSeconds() > .25f)
+		if (animationClock.getElapsedTime().asSeconds() > 1.f)
 		{
 			if (animationRect.left >= 3900)
 				animationRect.left = 0;
@@ -117,15 +121,33 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 				switch (Event.key.code)
 				{
 				case sf::Keyboard::Up:
-					menu = 0;
-					break;
+				{
+					if (playSwitch2 == true)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = false;
+						playSwitch2 = false;
+
+					}
+				menu = 0;
+				}
+				break;
 				case sf::Keyboard::Down:
+				{
+					if (!playSwitch)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = true;
+						playSwitch2 = true;
+					}
 					menu = 1;
+				}
 					break;
 				case sf::Keyboard::Return:
 					if (menu == 0 && playing == true)
 					{
 						//get play !
+
 						return (5);
 					}
 					else if (menu == 1 && playing == true)
@@ -136,17 +158,20 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 					{
 						//get play !
 						//godzillaSound.play();
+						SoundManager::GetInstance()->selected();
 						playing = true;
 						return (1);
 					}
 					else
 					{
 						//get work
+						SoundManager::GetInstance()->selected();
 						return (-1);
 					}
 					break;
 				case sf::Keyboard::Space:
 				{
+					
 					return (4);
 				}
 				default:
@@ -174,6 +199,7 @@ int Menu::Run(sf::RenderWindow &App,b2World &world)
 			Menu2.setColor(sf::Color(255, 0, 0, 255));
 			Menu3.setColor(sf::Color(255, 255, 255, 255));
 			Menu4.setColor(sf::Color(84, 84, 84, 255));
+			
 		}
 
 		//Clearing screen

@@ -39,6 +39,13 @@ public:
 	void whatsGoin();
 	void haHa();
 	void fart();
+	void choose();
+	void mainMusic();
+	void selected();
+	void levelSsound();
+	void fight();
+	void p1Sound();
+	void p2Sound();
 
 	~SoundManager()
 	{
@@ -113,6 +120,27 @@ private:
 
 	sf::SoundBuffer fartBuffer;
 	sf::Sound fartMusic;
+
+	sf::SoundBuffer switchBuffer;
+	sf::Sound switchMusic;
+
+	sf::SoundBuffer selectedBuffer;
+	sf::Sound selectedMusic;
+
+	sf::SoundBuffer mainMusicBuffer;
+	sf::Music mainMMusic;
+
+	sf::SoundBuffer levelSsoundBuffer;
+	sf::Sound levelSsoundMusic;
+
+	sf::SoundBuffer p2Buffer;
+	sf::Sound p2Music;
+
+	sf::SoundBuffer p1Buffer;
+	sf::Sound p1Music;
+
+	sf::SoundBuffer fightsoundBuffer;
+	sf::Sound fightMusic;
 
 	SoundManager()
 	{

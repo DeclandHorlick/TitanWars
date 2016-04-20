@@ -43,12 +43,12 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 	int selection = 0;
 
 
-	if (!endGameTexture.loadFromFile("godPortait.jpg"))
+	if (!endGameTexture.loadFromFile("endGame.png"))
 	{
 		std::cerr << "Error loading godPortait.jpg" << std::endl;
 	}
 	endGameSprite.setTexture(endGameTexture);
-	endGameSprite.setColor(sf::Color(255, 255, 255, alpha));
+	endGameSprite.setColor(sf::Color(255, 255, 255, 255));
 
 	
 
@@ -61,19 +61,19 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 	}
 
 	mainMenuTxt.setFont(Font);
-	mainMenuTxt.setCharacterSize(60);
+	mainMenuTxt.setCharacterSize(40);
 	mainMenuTxt.setString("Main Menu");
-	mainMenuTxt.setPosition({ 300.f, 100.f });
+	mainMenuTxt.setPosition({ 470.f, 380.f });
 
 	restartGame.setFont(Font);
-	restartGame.setCharacterSize(60);
+	restartGame.setCharacterSize(40);
 	restartGame.setString("Restart");
-	restartGame.setPosition({ 300.f, 300.f });
+	restartGame.setPosition({ 510.f,480.f });
 
 	changeCharacter.setFont(Font);
-	changeCharacter.setCharacterSize(60);
+	changeCharacter.setCharacterSize(40);
 	changeCharacter.setString("Change Characters");
-	changeCharacter.setPosition({ 300.f, 500.f });
+	changeCharacter.setPosition({ 375.f, 580.f });
 
 
 
@@ -103,13 +103,19 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 					if (selection == 0)
 						selection = 0;
 					else
+					{
 						selection -= 1;
+						SoundManager::GetInstance()->choose();
+					}
 					break;
 				case sf::Keyboard::Down:
 					if (selection == 2)
-						selection = 0;
+						selection = 2;
 					else
+					{
 						selection += 1;
+						SoundManager::GetInstance()->choose();
+					}
 					break;
 				case sf::Keyboard::Return:
 					
@@ -118,20 +124,26 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 							//get gozilla
 							//playing = true;
 							//PlayerManager::GetInstance()->setP2TextureName(gozillaS);
+							SoundManager::GetInstance()->selected();
 							BlockManager::GetInstance()->Reset();
 							PlayerManager::GetInstance()->Reset();
+							EffectsManager::GetInstance()->reset();
 							return (0);
 						}
 						else if (selection == 1)
 						{
+							SoundManager::GetInstance()->selected();
 							BlockManager::GetInstance()->Reset();
 							PlayerManager::GetInstance()->Reset();
+							EffectsManager::GetInstance()->reset();
 							return(5);
 						}
 						else
 						{
+							SoundManager::GetInstance()->selected();
 							BlockManager::GetInstance()->Reset();
 							PlayerManager::GetInstance()->Reset();
+							EffectsManager::GetInstance()->reset();
 							return(1);
 						}
 					
@@ -151,20 +163,20 @@ int EndGame::Run(sf::RenderWindow &App, b2World &world)
 			if (selection == 0)
 			{
 				restartGame.setColor(sf::Color(255, 255, 255, 255));
-				mainMenuTxt.setColor(sf::Color(0, 0, 255, 255));
+				mainMenuTxt.setColor(sf::Color(255, 0, 0, 255));
 				changeCharacter.setColor(sf::Color(255, 255, 255, 255));
 			}
 			else if (selection == 1)
 			{
 				mainMenuTxt.setColor(sf::Color(255, 255, 255, 255));
-				restartGame.setColor(sf::Color(0, 0, 255, 255));
+				restartGame.setColor(sf::Color(255, 0, 0, 255));
 				changeCharacter.setColor(sf::Color(255, 255, 255, 255));
 			}
 			else
 			{
 				restartGame.setColor(sf::Color(255, 255, 255, 255));
 				mainMenuTxt.setColor(sf::Color(255, 255, 255, 255));
-				changeCharacter.setColor(sf::Color(0, 0, 255, 255));
+				changeCharacter.setColor(sf::Color(255, 0, 0, 255));
 				
 
 			}

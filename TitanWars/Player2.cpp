@@ -69,6 +69,10 @@ Player2::Player2(b2World &world, int width, int height)
 	powerSprite.setOrigin(0, 80);
 	powerSprite.setTexture(powerTexture);
 
+	weaponBkT.loadFromFile("bar2.png");
+	weaponBkS.setTexture(weaponBkT);
+	weaponBkS.setPosition(1010, 680);
+
 	myNames.push_back("Gormy : ");
 	myNames.push_back("John : ");
 	myNames.push_back("Ken : ");
@@ -99,6 +103,7 @@ Player2::Player2(b2World &world, int width, int height)
 	health = 100;
 	nameHealth.setFont(Font);
 	nameHealth.setCharacterSize(12);
+	nameHealth.setColor(sf::Color(87, 146, 181, 255));
 
 	rocketBuffer.loadFromFile("rocketThrow.wav");
 
@@ -109,7 +114,7 @@ Player2::Player2(b2World &world, int width, int height)
 }
 void Player2::Draw(sf::RenderWindow &App, b2World &world)
 {
-	nameHealth.setPosition({ bodypos.x - 25, bodypos.y + 35 });
+	nameHealth.setPosition({ bodypos.x - 30, bodypos.y + 35 });
 	s = std::to_string(getHealth());
 	nameHealth.setString(currentName + s);
 
@@ -132,11 +137,55 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 	{
 		if (animationClock.getElapsedTime().asSeconds() > .25f)
 		{
-			if (animationRect.left >= 274)
+		if (currentAnimation == 0)
+		{
+
+			animationRect.top = 0;
+			if (animationRect.left >= 207)
+			{
 				animationRect.left = 0;
+			}
+			else
+			{
+				animationRect.left += 69;
+			}
+		}
+		else if (currentAnimation == 1)
+		{
+			if (switchAnimation == true)
+			{
+				animationRect.left = 0;
+				animationRect.top = 72;
+				switchAnimation = false;
+			}
+
+			if (animationRect.left >= 276)
+			{
+				animationRect.left = 0;
+				currentAnimation = 0;
+			}
+			else
+			{
+				animationRect.left += 69;
+			}
+		}
+		else if (currentAnimation == 2)
+		{
+			if (switchAnimation == true)
+			{
+				animationRect.left = 0;
+				animationRect.top = 144;
+				switchAnimation = false;
+			}
+
+			if (animationRect.left >= 276)
+			{
+				animationRect.left = 0;
+				currentAnimation = 0;
+			}
 			else
 				animationRect.left += 69;
-
+		}
 			playerSprite.setTextureRect(animationRect);
 			animationClock.restart();
 		}
@@ -145,10 +194,55 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 	{
 		if (animationClock.getElapsedTime().asSeconds() > .25f)
 		{
-			if (animationRect.left >= 366)
-				animationRect.left = 0;
-			else
-				animationRect.left += 61;
+			if (currentAnimation == 0)
+			{
+
+				animationRect.top = 0;
+				if (animationRect.left >= 183)
+				{
+					animationRect.left = 0;
+				}
+				else
+				{
+					animationRect.left += 61;
+				}
+			}
+			else if (currentAnimation == 1)
+			{
+				if (switchAnimation == true)
+				{
+					animationRect.left = 0;
+					animationRect.top = 72;
+					switchAnimation = false;
+				}
+
+				if (animationRect.left >= 305)
+				{
+					animationRect.left = 0;
+					currentAnimation = 0;
+				}
+				else
+				{
+					animationRect.left += 61;
+				}
+			}
+			else if (currentAnimation == 2)
+			{
+				if (switchAnimation == true)
+				{
+					animationRect.left = 0;
+					animationRect.top = 144;
+					switchAnimation = false;
+				}
+
+				if (animationRect.left >= 276)
+				{
+					animationRect.left = 0;
+					currentAnimation = 0;
+				}
+				else
+					animationRect.left += 61;
+			}
 
 			playerSprite.setTextureRect(animationRect);
 			animationClock.restart();
@@ -167,7 +261,7 @@ void Player2::Draw(sf::RenderWindow &App, b2World &world)
 		playerSprite.setScale(1, 1);
 
 	}
-	
+	App.draw(weaponBkS);
 	App.draw(playerSprite);
 	App.draw(nameHealth);
 	App.draw(aimSprite);
@@ -200,7 +294,10 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 	getVelocity = boxBody->GetLinearVelocity();
 	powerSprite.setPosition(bodypos.x - 20, bodypos.y);
 
-
+	if (bodypos.y > 850)
+	{
+		setHealth(100);
+	}
 	//cant shoot multiple
 	if (myRockets.size() == 1)
 	{
@@ -328,6 +425,11 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 		{
 			boxBody->SetLinearVelocity(b2Vec2(-xVelocity, boxBody->GetLinearVelocity().y));
 			goingRight = false;
+			if (currentAnimation != 2)
+			{
+				currentAnimation = 2;
+				switchAnimation = true;
+			}
 		}
 		else
 		{
@@ -342,6 +444,11 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 
 			boxBody->SetLinearVelocity(b2Vec2(xVelocity, boxBody->GetLinearVelocity().y));
 			goingRight = true;
+			if (currentAnimation != 2)
+			{
+				currentAnimation = 2;
+				switchAnimation = true;
+			}
 		}
 		else
 		{
@@ -382,6 +489,8 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 					SoundManager::GetInstance()->eatThis();
 					currenRtMusic = 0;
 				}
+				currentAnimation = 1;
+				switchAnimation = true;
 				myRockets.push_back(new Rocket(2, 16, rotation, boxBody->GetPosition(), world, power));
 				myRockets[0]->isRocketAlive();
 						
@@ -409,6 +518,8 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 						SoundManager::GetInstance()->puke3();
 						currentMusic = 0;
 					}
+					currentAnimation = 1;
+					switchAnimation = true;
 					myMagic.push_back(new Rifle(2, 16, rotation, boxBody->GetPosition(), world));
 					myMagic[0]->isRifleAlive();
 
@@ -421,6 +532,8 @@ void Player2::Update(sf::RenderWindow &App, b2World &world)
 			if (myCar.size() == 0)
 			{
 				SoundManager::GetInstance()->scream();
+				currentAnimation = 1;
+				switchAnimation = true;
 				myCar.push_back(new Car(2, 16, rotation, boxBody->GetPosition(), world, power / 2));
 				myCar[0]->isCarAlive();
 			}

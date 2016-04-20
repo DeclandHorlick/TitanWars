@@ -83,13 +83,32 @@ void SoundManager::loadSounds()
 	hahaBuffer.loadFromFile("Sounds/Haha.wav");
 	hahaMusic.setBuffer(hahaBuffer);
 
-	whatsgoinBuffer.loadFromFile("Sounds/Whatsgoin.wav");
-	whatsgoinMusic.setBuffer(whatsgoinBuffer);
 
 	fartBuffer.loadFromFile("Sounds/fart.wav");
 	fartMusic.setBuffer(fartBuffer);
 
+	whatsgoinBuffer.loadFromFile("Sounds/Whatsgoin.wav");
+	whatsgoinMusic.setBuffer(whatsgoinBuffer);
 
+	switchBuffer.loadFromFile("Sounds/switch.wav");
+	switchMusic.setBuffer(switchBuffer);
+
+	selectedBuffer.loadFromFile("Sounds/selected.wav");
+	selectedMusic.setBuffer(selectedBuffer);
+
+	levelSsoundBuffer.loadFromFile("Sounds/Levelselected.wav");
+	levelSsoundMusic.setBuffer(levelSsoundBuffer);
+
+	p1Buffer.loadFromFile("Sounds/Player1.wav");
+	p1Music.setBuffer(p1Buffer);
+
+	p2Buffer.loadFromFile("Sounds/Player2.wav");
+	p2Music.setBuffer(p2Buffer);
+
+	fightsoundBuffer.loadFromFile("Sounds/Fight.wav");
+	fightMusic.setBuffer(fightsoundBuffer);
+	
+	mainMMusic.openFromFile("Sounds/mainMusic.wav");
 }
 void SoundManager::carBounce()
 {
@@ -178,4 +197,38 @@ void SoundManager::haHa()
 void SoundManager::fart()
 {
 	fartMusic.play();
+}
+void SoundManager::choose()
+{
+	switchMusic.play();
+}
+void SoundManager::selected()
+{
+	selectedMusic.play();
+}
+void SoundManager::mainMusic()
+{
+	mainMMusic.setVolume(50);
+	mainMMusic.play();
+	mainMMusic.setLoop(true);
+}
+void SoundManager::levelSsound()
+{
+	levelSsoundMusic.play();
+
+}
+void SoundManager::p1Sound()
+{
+	p1Music.play();
+
+}
+void SoundManager::p2Sound()
+{
+	p2Music.play();
+
+}
+void SoundManager::fight()
+{
+	fightMusic.play();
+
 }

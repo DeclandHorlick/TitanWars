@@ -12,6 +12,7 @@
 #include "Player2.h"
 #include "Rifle.h"
 #include "SoundManager.h"
+#include "EffectsManager.h"
 #include<vector>
 //
 class CollisionResponder : public b2ContactListener {
@@ -51,7 +52,8 @@ public:
 					BodyDestroyer::GetInstance()->AddBody(bodyUserBody);
 				}
 				if (!rocket->rocketDeleted)
-				{
+				{ 
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
 					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					rocket->playAnimation = true;
@@ -80,6 +82,7 @@ public:
 				}
 				if (!rocket->rocketDeleted)
 				{
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
 					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					rocket->playAnimation = true;
@@ -114,6 +117,7 @@ public:
 
 				if (!rocket->rocketDeleted)
 				{
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
 					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					rocket->playAnimation = true;
@@ -123,7 +127,7 @@ public:
 					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
 					if (rocket->m_owner == 2)
 					{
-						PlayerManager::GetInstance()->getPlayer1()->setHealth(20);
+						PlayerManager::GetInstance()->getPlayer1()->setHealth(30);
 					}
 					if (PlayerManager::GetInstance()->getPlayer1()->getHealth() <= 0 )
 					{
@@ -142,6 +146,7 @@ public:
 
 				if (!rocket->rocketDeleted)
 				{
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
 					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					rocket->playAnimation = true;
@@ -151,7 +156,7 @@ public:
 					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
 					if (rocket->m_owner == 2)
 					{
-						PlayerManager::GetInstance()->getPlayer1()->setHealth(20);
+						PlayerManager::GetInstance()->getPlayer1()->setHealth(30);
 					}
 					if (PlayerManager::GetInstance()->getPlayer1()->getHealth() <= 0 )
 					{
@@ -176,7 +181,8 @@ public:
 
 				if (!rocket->rocketDeleted)
 				{
-					
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
+					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					PlayerManager::GetInstance()->GetPlayersRockets(rocket->m_owner)->clear();
 					BodyDestroyer::GetInstance()->AddBody(rocketBody);
@@ -184,7 +190,7 @@ public:
 					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
 					if (rocket->m_owner == 1)
 					{
-						PlayerManager::GetInstance()->getPlayer2()->setHealth(20);
+						PlayerManager::GetInstance()->getPlayer2()->setHealth(30);
 					}
 					if (PlayerManager::GetInstance()->getPlayer2()->getHealth() <= 0)
 					{
@@ -203,7 +209,8 @@ public:
 
 				if (!rocket->rocketDeleted)
 				{
-					
+					EffectsManager::GetInstance()->addExplosion(rocketBody->GetPosition());
+					SoundManager::GetInstance()->bombBang();
 					rocket->rocketDeleted = true;
 					PlayerManager::GetInstance()->GetPlayersRockets(rocket->m_owner)->clear();
 					BodyDestroyer::GetInstance()->AddBody(rocketBody);
@@ -211,7 +218,7 @@ public:
 					PlayerManager::GetInstance()->getPlayer2()->player2Turn = !PlayerManager::GetInstance()->getPlayer2()->player2Turn;
 					if (rocket->m_owner == 1)
 					{
-						PlayerManager::GetInstance()->getPlayer2()->setHealth(20);
+						PlayerManager::GetInstance()->getPlayer2()->setHealth(30);
 					}
 					if (PlayerManager::GetInstance()->getPlayer2()->getHealth() <= 0)
 					{
@@ -503,7 +510,7 @@ public:
 					std::vector<Car*>::iterator it = r->begin();
 					if (car->m_owner == 2)
 					{
-						PlayerManager::GetInstance()->getPlayer1()->setHealth(30);
+						PlayerManager::GetInstance()->getPlayer1()->setHealth(40);
 					}
 					for (; it != r->end();)
 					{
@@ -535,7 +542,7 @@ public:
 					std::vector<Car*>::iterator it = r->begin();
 					if (car->m_owner == 2)
 					{
-						PlayerManager::GetInstance()->getPlayer1()->setHealth(30);
+						PlayerManager::GetInstance()->getPlayer1()->setHealth(40);
 					}
 					for (; it != r->end();)
 					{
@@ -572,7 +579,7 @@ public:
 					std::vector<Car*>::iterator it = r->begin();
 					if (car->m_owner == 1)
 					{
-						PlayerManager::GetInstance()->getPlayer2()->setHealth(30);
+						PlayerManager::GetInstance()->getPlayer2()->setHealth(40);
 					}
 					for (; it != r->end();)
 					{
@@ -603,7 +610,7 @@ public:
 					std::vector<Car*>::iterator it = r->begin();
 					if (car->m_owner == 1)
 					{
-						PlayerManager::GetInstance()->getPlayer2()->setHealth(30);
+						PlayerManager::GetInstance()->getPlayer2()->setHealth(40);
 					}
 					for (; it != r->end();)
 					{

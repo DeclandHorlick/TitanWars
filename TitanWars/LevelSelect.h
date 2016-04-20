@@ -33,6 +33,8 @@ int LevelSelect::Run(sf::RenderWindow &App, b2World &world)
 	sf::Event Event;
 	bool Running = true;
 	bool level2selection = false;
+	bool playSwitch = false;
+	bool playSwitch2 = false;
 	sf::Texture level1T;
 	sf::Sprite level1S;
 	sf::Texture level2T;
@@ -45,12 +47,12 @@ int LevelSelect::Run(sf::RenderWindow &App, b2World &world)
 	int selection = 0;
 
 
-	if (!level1T.loadFromFile("godPortait.jpg"))
+	if (!level1T.loadFromFile("mapselect.png"))
 	{
-		std::cerr << "Error loading godPortait.jpg" << std::endl;
+		std::cerr << "mapselect" << std::endl;
 	}
 	level1S.setTexture(level1T);
-	level1S.setColor(sf::Color(255, 255, 255, alpha));
+	level1S.setColor(sf::Color(255, 255, 255, 255));
 
 	if (!level2T.loadFromFile("kingPortait.jpg"))
 	{
@@ -68,14 +70,14 @@ int LevelSelect::Run(sf::RenderWindow &App, b2World &world)
 	}
 
 	level1Text.setFont(Font);
-	level1Text.setCharacterSize(60);
+	level1Text.setCharacterSize(40);
 	level1Text.setString("Open Battle");
-	level1Text.setPosition({ 100.f, 500.f });
+	level1Text.setPosition({ 130.f, 600.f });
 
 	level2Text.setFont(Font);
-	level2Text.setCharacterSize(60);
+	level2Text.setCharacterSize(40);
 	level2Text.setString("The Wall");
-	level2Text.setPosition({ 600.f, 500.f });
+	level2Text.setPosition({ 800.f, 600.f });
 
 
 	if (playing)
@@ -100,17 +102,36 @@ int LevelSelect::Run(sf::RenderWindow &App, b2World &world)
 				switch (Event.key.code)
 				{
 				case sf::Keyboard::Left:
+				{
+					if (playSwitch2 == true)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = false;
+						playSwitch2 = false;
+
+					}
 					selection = 0;
+				}
 					break;
 				case sf::Keyboard::Right:
+				{
+					if (!playSwitch)
+					{
+						SoundManager::GetInstance()->choose();
+						playSwitch = true;
+						playSwitch2 = true;
+					}
 					selection = 1;
+				}
 					break;
 				case sf::Keyboard::Return:
 					
 					if (selection == 0)
 					{
 						//get gozilla
+						SoundManager::GetInstance()->levelSsound();
 						PlayerManager::GetInstance()->setCurrentLevel(0);
+
 						//load level 1
 						//level1selection = true;
 						return (5);
@@ -118,6 +139,7 @@ int LevelSelect::Run(sf::RenderWindow &App, b2World &world)
 					else
 					{
 						//get kingkong
+						SoundManager::GetInstance()->levelSsound();
 						PlayerManager::GetInstance()->setCurrentLevel(1);
 						return (5);
 						
