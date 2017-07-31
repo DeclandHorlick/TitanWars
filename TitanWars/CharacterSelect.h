@@ -53,11 +53,11 @@ int CharacterSelect::Run(sf::RenderWindow &App, b2World &world)
 	}
 	godzillaSprite.setTexture(godzillaTexture);
 	godzillaSprite.setColor(sf::Color(255, 255, 255, 255));
-	
+	/*
 	if (!kingTexture.loadFromFile("kingPortait.jpg"))
 	{
 		std::cerr << "Error loading king.jpg" << std::endl;
-	}
+	}*/
 	kingSprite.setTexture(kingTexture);
 	kingSprite.setColor(sf::Color(255, 255, 255, alpha));
 	

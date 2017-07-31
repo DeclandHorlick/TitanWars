@@ -33,7 +33,7 @@ public:
 	bool carDeleted;
 	bool carAlive = false;
 	bool playAnimation = false;
-	b2Body* getBody();
+	b2Body* getBody();        
 
 	bool isCarDeleted();
 	bool isCarAlive();

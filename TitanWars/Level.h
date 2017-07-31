@@ -41,8 +41,6 @@ private:
 public:
 
 	Level();
-	//Level(b2World &world, int width, int height);
-	//void Draw(sf::RenderWindow &App, b2World &world);
 	~Level(){};
 
 	

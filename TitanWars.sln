@@ -10,16 +10,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TitanWars\Level1.txt = TitanWars\Level1.txt
 	EndProjectSection
 EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "TitanWarsInstallShield", "TitanWarsInstallShield\TitanWarsInstallShield.isproj", "{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01} = {7068AB3C-3C12-49EE-9E04-F8238676FC01}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Win32 = CD_ROM|Win32
 		Debug|Win32 = Debug|Win32
+		DVD-5|Win32 = DVD-5|Win32
 		Release|Win32 = Release|Win32
+		SingleImage|Win32 = SingleImage|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.CD_ROM|Win32.ActiveCfg = Release|Win32
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.CD_ROM|Win32.Build.0 = Release|Win32
 		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.Debug|Win32.Build.0 = Debug|Win32
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.DVD-5|Win32.ActiveCfg = Debug|Win32
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.DVD-5|Win32.Build.0 = Debug|Win32
 		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.Release|Win32.ActiveCfg = Release|Win32
 		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.Release|Win32.Build.0 = Release|Win32
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.SingleImage|Win32.ActiveCfg = Release|Win32
+		{7068AB3C-3C12-49EE-9E04-F8238676FC01}.SingleImage|Win32.Build.0 = Release|Win32
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.CD_ROM|Win32.ActiveCfg = CD_ROM
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.CD_ROM|Win32.Build.0 = CD_ROM
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.Debug|Win32.ActiveCfg = DVD-5
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.Debug|Win32.Build.0 = DVD-5
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.DVD-5|Win32.ActiveCfg = DVD-5
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.DVD-5|Win32.Build.0 = DVD-5
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.Release|Win32.ActiveCfg = SingleImage
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.Release|Win32.Build.0 = SingleImage
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.SingleImage|Win32.ActiveCfg = SingleImage
+		{EA79F552-BCF7-4C1C-8551-3B80B0CDFE10}.SingleImage|Win32.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
